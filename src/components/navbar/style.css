@@ -1,6 +1,7 @@
 #navbar-container {
   height: 100vh;
-  width: 7vw;
+  /* width: 7vw; */
+  width: 200px;
   background-color: paleturquoise;
   display: flex;
   flex-direction: column;
@@ -8,12 +9,12 @@
   align-items: start;
 }
 
-#navbar-container:hover {
+/* #navbar-container:hover {
   width: 20vw;
   display: flex;
   flex-direction: column;
   justify-content: start;
-}
+} */
 
 .navbar-icons {
   display: inline-block;
@@ -22,13 +23,13 @@
   margin-left: 10px;
 }
 
-#navbar-container div span {
+/* #navbar-container div span {
   display: none;
-}
+} */
 
-#navbar-container:hover div span {
+/* #navbar-container:hover div span {
   display: block;
-}
+} */
 
 .activeClassName {
   text-decoration: none !important;

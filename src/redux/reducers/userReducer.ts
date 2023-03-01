@@ -1,5 +1,8 @@
 const initialState = {
-  name: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  avatar: "",
 };
 
 interface reduxAction {

@@ -9,7 +9,7 @@ import ProfilePage from "./components/profile/ProfilePage";
 function App() {
   return (
     <BrowserRouter>
-      <LateralNavbar />;
+      <LateralNavbar />
       <Routes>
         <Route path="/me/profile" element={<ProfilePage />} />
       </Routes>
