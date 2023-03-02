@@ -1,10 +1,15 @@
 import "./style.css";
 import * as Icon from "react-bootstrap-icons";
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../../redux/store";
 
 const LateralNavbar = () => {
+  const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
   return (
-    <div id="navbar-container">
+    <div
+      id="navbar-container"
+      className={isLoggedIn === true ? "d-block" : "d-none"}
+    >
       <NavLink
         to="/"
         className={({ isActive }) =>

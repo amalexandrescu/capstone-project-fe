@@ -1,8 +1,19 @@
-const initialState = {
+import { LOG_IN, SUCCESSFULLY_LOGGED_IN } from "../actions";
+
+interface UserState {
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar: string;
+  successfullyLoggedIn: boolean;
+}
+
+const initialState: UserState = {
   firstName: "",
   lastName: "",
   email: "",
   avatar: "",
+  successfullyLoggedIn: false,
 };
 
 interface reduxAction {
@@ -12,12 +23,16 @@ interface reduxAction {
 
 const userReducer = (state = initialState, action: reduxAction) => {
   switch (action.type) {
-    // case SET_USERNAME:
-    //   return {
-    //     ...state,
-    //     name: action.payload, // this is the new username, just set
-    //   };
-
+    case LOG_IN:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case SUCCESSFULLY_LOGGED_IN:
+      return {
+        ...state,
+        successfullyLoggedIn: action.payload,
+      };
     default:
       return state;
   }
