@@ -1,39 +1,6 @@
-import {
-  configureStore,
-  combineReducers,
-  getDefaultMiddleware,
-} from "@reduxjs/toolkit";
-// import bookReducer from "../reducers/bookReducer";
-// import cartReducer from "../reducers/cartReducer";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "../reducers/userReducer";
-// configureStore will set up the Redux Store for us!
-import localStorage from "redux-persist/lib/storage";
-import { persistReducer, persistStore } from "redux-persist";
-import { encryptTransform } from "redux-persist-transform-encrypt";
-
-// our redux store looked like this:
-// const initialState = {
-//   cart: {
-//     content: []
-//   },
-//   user: {
-//     name: ''
-//   }
-// }
-
-if (process.env.REACT_APP_SECRET_KEY === undefined) {
-  throw new Error("please provide secret key in env file");
-}
-
-const persistConfig = {
-  key: "root",
-  storage: localStorage, // the default engine
-  transforms: [
-    encryptTransform({
-      secretKey: process.env.REACT_APP_SECRET_KEY,
-    }),
-  ],
-};
 
 const bigReducer = combineReducers({
   user: userReducer,
@@ -41,18 +8,21 @@ const bigReducer = combineReducers({
 
 // this is creating a persisted version of bigReducer, using the configuration
 // object declared above
-const persistedReducer = persistReducer(persistConfig, bigReducer);
+// const persistedReducer = persistReducer(persistConfig, bigReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer, // here there's place for just 1 value!
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-      // this is for shutting down the serializable check
-      // performed by Redux, and getting rid of the error in the console
-    }),
+  reducer: bigReducer,
 });
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+
+// Use throughout your app instead of plain `useDispatch` and `useSelector`
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 // we also have to create a persisted version of our store
 // this is commonly refered as "persistor"
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);

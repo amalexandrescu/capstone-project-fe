@@ -19,14 +19,27 @@ const ProfilePage = () => {
 
   const dispatch = useDispatch();
 
+  const fetchData = async () => {
+    try {
+      const resp = await fetch("http://localhost:3000/users/me/profile", {
+        credentials: "include",
+      });
+      if (resp.ok) {
+        const me = await resp.json();
+        console.log(me);
+      } else {
+        console.log("Sorry");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {}, []);
 
-  // const onChangeHandler = (
-  //   e: ChangeEvent<HTMLInputElement>,
-  //   fieldToSet: string
-  // ) => {
-  //   ...profileInfo,
-  //   [string]: e.target.value
+  // const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.currentTarget;
+  //   setInputValues((prevState) => ({ ...prevState, [name]: value }));
   // };
 
   const handleSubmit = (e: FormEvent) => {
@@ -76,6 +89,13 @@ const ProfilePage = () => {
           </Form>
         </Col>
       </Row>
+      <Button
+        onClick={() => {
+          fetchData();
+        }}
+      >
+        test
+      </Button>
     </Container>
   );
 };
