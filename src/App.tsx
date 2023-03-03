@@ -6,8 +6,30 @@ import LogIn from "./components/login/LogIn";
 import Register from "./components/login/Register";
 import Home from "./components/home/Home";
 import ProtectedRoute from "./components/helpers/ProtectedRoute";
+import { useAppDispatch, useAppSelector } from "./redux/store";
+import { useEffect } from "react";
+import { editProfileInfoAction, getMyProfileAction } from "./redux/actions";
+import EditProfileInput from "./components/profile/EditProfileInput";
 
 function App() {
+  const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
+  const profileInfoEditSuccessfully = useAppSelector(
+    (state) => state.user.editProfileInfoSuccessfully
+  );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getMyProfileAction());
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (profileInfoEditSuccessfully) {
+      dispatch(getMyProfileAction());
+      dispatch(editProfileInfoAction(false));
+    }
+  }, [profileInfoEditSuccessfully]);
   return (
     <BrowserRouter>
       <LateralNavbar />
@@ -30,6 +52,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/me/profile/edit"
+          element={
+            <ProtectedRoute>
+              <EditProfileInput />
+            </ProtectedRoute>
+          }
+        ></Route>
       </Routes>
     </BrowserRouter>
   );

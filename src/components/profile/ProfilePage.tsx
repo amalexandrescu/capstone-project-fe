@@ -1,9 +1,13 @@
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import * as Icon from "react-bootstrap-icons";
 // import { Input } from "@mantine/core";
 import "./style.css";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { profile } from "console";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/store";
+import EditProfileInput from "./EditProfileInput";
+import { useNavigate } from "react-router";
 
 interface User {
   firstName: string;
@@ -16,86 +20,50 @@ interface User {
 
 const ProfilePage = () => {
   const [profileInfo, setProfileInfo] = useState<null | User>(null);
+  const myProfile = useAppSelector((state) => state.user.myProfile);
+  const [editButtonClicked, setEditButtonClicked] = useState(false);
 
   const dispatch = useDispatch();
-
-  const fetchData = async () => {
-    try {
-      const resp = await fetch("http://localhost:3000/users/me/profile", {
-        credentials: "include",
-      });
-      if (resp.ok) {
-        const me = await resp.json();
-        console.log(me);
-      } else {
-        console.log("Sorry");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {}, []);
-
-  // const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-  //   const { name, value } = e.currentTarget;
-  //   setInputValues((prevState) => ({ ...prevState, [name]: value }));
-  // };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-  };
 
   return (
     <Container fluid className="mainPageContainer">
       <Row className="justify-content-center">
-        <Col className="bg-success col-md-6 col-lg-8">
-          <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label>First name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Type your first name here"
-                required
-                value=""
-                // onChange={(e) => onChangeHandler(e.target.value, "firstName")}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Last name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Type your last name here"
-                required
-                value=""
-                // onChange={(e) => this.onChangeHandler(e.target.value, 'name')}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
+        <Col className="bg-success  d-flex align-items-center justify-content-between mt-5">
+          <div className="profileImageContainer">
+            {myProfile.avatar === "" ? (
+              <Icon.PersonFill className="profileIcon" />
+            ) : (
+              <img src={myProfile.avatar} alt="avatar" />
+            )}
+          </div>
+          {!editButtonClicked && (
+            <div className="profileInfoContainer">
+              <h6 className="mb-0">First name</h6>
+              <div>{myProfile.firstName}</div>
+              <h6 className="mb-0 mt-1">Last name</h6>
+              <div>{myProfile.lastName}</div>
+              <h6 className="mb-0 mt-1"> Email address</h6>
+              <div>{myProfile.email}</div>
+              <Button
+                type="button"
+                onClick={(e) => {
+                  setEditButtonClicked(true);
+                  navigate("/me/profile/edit");
 
-            {/* <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group> */}
-            <Button variant="primary" type="submit">
-              Edit profile
-            </Button>
-          </Form>
+                  console.log("after click: ", editButtonClicked);
+                }}
+                className="mt-3"
+              >
+                Edit profile
+              </Button>
+            </div>
+          )}
+          {/* {editButtonClicked && <EditProfileInput />} */}
         </Col>
       </Row>
-      <Button
-        onClick={() => {
-          fetchData();
-        }}
-      >
-        test
-      </Button>
     </Container>
   );
 };

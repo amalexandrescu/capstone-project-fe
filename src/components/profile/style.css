@@ -5,3 +5,36 @@
 .mainPageContainer {
   background-color: var(--main-bg-color);
 }
+
+.profileImageContainer {
+  height: 300px;
+  width: 300px;
+  background-color: white;
+  border-radius: 50%;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.profileImageContainer img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.profileIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 20px 30px;
+}
+
+.profileInfoContainer {
+  height: 300px;
+  width: 300px;
+  background-color: white;
+}
