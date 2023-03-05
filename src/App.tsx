@@ -8,7 +8,11 @@ import Home from "./components/home/Home";
 import ProtectedRoute from "./components/helpers/ProtectedRoute";
 import { useAppDispatch, useAppSelector } from "./redux/store";
 import { useEffect } from "react";
-import { editProfileInfoAction, getMyProfileAction } from "./redux/actions";
+import {
+  editProfileInfoAction,
+  editProfilePhotoAction,
+  getMyProfileAction,
+} from "./redux/actions";
 import EditProfileInput from "./components/profile/EditProfileInput";
 
 function App() {
@@ -16,6 +20,9 @@ function App() {
   const profileInfoEditSuccessfully = useAppSelector(
     (state) => state.user.editProfileInfoSuccessfully
   );
+  // const profilePhotoEditSuccessfully = useAppSelector(
+  //   (state) => state.user.editProfilePhotoSuccessfully
+  // );
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -24,12 +31,13 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    if (profileInfoEditSuccessfully) {
-      dispatch(getMyProfileAction());
-      dispatch(editProfileInfoAction(false));
-    }
-  }, [profileInfoEditSuccessfully]);
+  // useEffect(() => {
+  //   if (profileInfoEditSuccessfully) {
+  //     dispatch(getMyProfileAction());
+  //     dispatch(editProfileInfoAction(false));
+  //   }
+  // }, [profileInfoEditSuccessfully]);
+
   return (
     <BrowserRouter>
       <LateralNavbar />

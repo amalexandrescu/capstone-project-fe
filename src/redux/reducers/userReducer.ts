@@ -3,6 +3,7 @@ import {
   SUCCESSFULLY_LOGGED_IN,
   GET_MY_PROFILE,
   EDIT_SUCCESSFULLY,
+  EDIT_PHOTO_SUCCESSFULLY,
 } from "../actions";
 
 export interface MyProfileInterface {
@@ -10,7 +11,7 @@ export interface MyProfileInterface {
   firstName: string;
   lastName: string;
   email: string;
-  avatar: string;
+  avatar?: string | File | null;
 }
 
 interface UserState {
@@ -22,6 +23,7 @@ interface UserState {
   // avatar: string;
   successfullyLoggedIn: boolean;
   editProfileInfoSuccessfully: boolean;
+  editProfilePhotoSuccessfully: boolean;
 }
 
 const initialState = {
@@ -34,6 +36,7 @@ const initialState = {
   },
   successfullyLoggedIn: false,
   editProfileInfoSuccessfully: false,
+  editProfilePhotoSuccessfully: false,
 };
 
 interface reduxAction {
@@ -57,6 +60,11 @@ const userReducer = (state = initialState, action: reduxAction) => {
       return {
         ...state,
         editProfileInfoSuccessfully: action.payload,
+      };
+    case EDIT_PHOTO_SUCCESSFULLY:
+      return {
+        ...state,
+        editProfilePhotoSuccessfully: action.payload,
       };
     default:
       return state;

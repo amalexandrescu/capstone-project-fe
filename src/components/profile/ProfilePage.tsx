@@ -52,8 +52,6 @@ const ProfilePage = () => {
                 onClick={(e) => {
                   setEditButtonClicked(true);
                   navigate("/me/profile/edit");
-
-                  console.log("after click: ", editButtonClicked);
                 }}
                 className="mt-3"
               >
