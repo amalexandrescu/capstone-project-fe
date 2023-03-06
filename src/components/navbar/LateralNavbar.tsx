@@ -22,14 +22,14 @@ const LateralNavbar = () => {
         </div>
       </NavLink>
       <NavLink
-        to="/watchedMovies"
+        to="/movies"
         className={({ isActive }) =>
           isActive ? "activeClassName" : "linkDesign"
         }
       >
         <div className="d-flex align-items-center mb-3">
           <Icon.Film className="navbar-icons mr-2" />
-          <span>Watched movies</span>
+          <span>My movies</span>
         </div>
       </NavLink>
       <NavLink

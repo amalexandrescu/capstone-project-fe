@@ -1,0 +1,85 @@
+:root {
+  --secondary-bg-color: #202c33;
+  --main-bg-color: #111b21;
+  --hover-bg-color: #202c33;
+  --icon-color: #aebac1;
+  --sent-message-color: #005c4b;
+  --secondary-icon-color: #53bdeb;
+}
+
+.input-search-bg,
+.input-search-bg:focus {
+  background-color: var(--hover-bg-color) !important;
+  border-left: 0 !important;
+  outline: none !important;
+  border-color: var(--icon-color) !important;
+  box-shadow: none !important;
+}
+
+.movieSearchLi:hover {
+  background-color: #005c4b;
+}
+
+.movieSearchLi {
+  cursor: pointer;
+}
+
+.moviePosterSearchLi {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: blue;
+  display: inline-block;
+  flex-wrap: wrap;
+}
+
+.moviePosterSearchLi img,
+.moviePosterSearchIcon {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.movieSearchlistGroup {
+  height: 200px;
+  width: 400px;
+  overflow-y: scroll;
+}
+
+.movieSearchlistGroup li,
+.movieSearchlistGroup span::nth-child(2) {
+  width: 100% !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.moviePosterContainer {
+  height: 500px;
+  width: 90%;
+  background-color: #202c33;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.moviePosterContainer img {
+  height: 100%;
+  width: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.watchedMovieButton {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.movieInfoContainer {
+  width: 90%;
+  background-color: #53bdeb;
+  border-radius: 5px;
+}
