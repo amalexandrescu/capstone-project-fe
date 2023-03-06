@@ -11,7 +11,11 @@ import {
 import { FormEvent, useState, ChangeEvent, useContext, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from "react-redux";
-import { logInAction, successfullyLoggedInAction } from "../../redux/actions";
+import {
+  getMyProfileAction,
+  // logInAction,
+  successfullyLoggedInAction,
+} from "../../redux/actions";
 import { AppDispatch, useAppDispatch, useAppSelector } from "../../redux/store";
 // import { ThunkAction } from "redux-thunk";
 import { Link } from "react-router-dom";
@@ -51,6 +55,7 @@ const LogIn = () => {
         dispatch(successfullyLoggedInAction());
         setLogInSuccessfully(true);
         navigate("/");
+        // dispatch(getMyProfileAction());
       } else {
         console.log("error while trying to log in");
       }
