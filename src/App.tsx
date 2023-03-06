@@ -14,6 +14,8 @@ import {
   getMyProfileAction,
 } from "./redux/actions";
 import EditProfileInput from "./components/profile/EditProfileInput";
+import Movies from "./components/movies/Movies";
+import SingleMoviePage from "./components/movies/SingleMoviePage";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
@@ -35,6 +37,22 @@ function App() {
       <Routes>
         <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
+        <Route
+          path="/movies"
+          element={
+            <ProtectedRoute>
+              <Movies />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/movies/:movieId"
+          element={
+            <ProtectedRoute>
+              <SingleMoviePage></SingleMoviePage>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/"
           element={
