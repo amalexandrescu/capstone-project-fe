@@ -20,9 +20,7 @@ function App() {
   const profileInfoEditSuccessfully = useAppSelector(
     (state) => state.user.editProfileInfoSuccessfully
   );
-  // const profilePhotoEditSuccessfully = useAppSelector(
-  //   (state) => state.user.editProfilePhotoSuccessfully
-  // );
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,13 +28,6 @@ function App() {
       dispatch(getMyProfileAction());
     }
   }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   if (profileInfoEditSuccessfully) {
-  //     dispatch(getMyProfileAction());
-  //     dispatch(editProfileInfoAction(false));
-  //   }
-  // }, [profileInfoEditSuccessfully]);
 
   return (
     <BrowserRouter>

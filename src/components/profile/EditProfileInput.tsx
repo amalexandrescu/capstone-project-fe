@@ -1,29 +1,20 @@
 import "./style.css";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { MyProfileInterface } from "../../redux/reducers/userReducer";
 import {
   editProfileInfoAction,
   editProfilePhotoAction,
-  getMyProfileAction,
 } from "../../redux/actions";
 import { useNavigate } from "react-router";
 import * as Icon from "react-bootstrap-icons";
 
+type IEditForm = Pick<MyProfileInterface, "firstName" | "lastName" | "email">;
+
 const EditProfileInput = () => {
   const myProfile = useAppSelector((state) => state.user.myProfile);
-  const [userInfo, setUserInfo] = useState<MyProfileInterface>(myProfile);
-  const [image, setImage] = useState<null | File>(null);
-  const profileInfoEditSuccessfully = useAppSelector(
-    (state) => state.user.editProfileInfoSuccessfully
-  );
+  const [userInfo, setUserInfo] = useState<IEditForm>(myProfile);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,21 +25,15 @@ const EditProfileInput = () => {
 
   const onChangeHandler = (
     e: ChangeEvent<HTMLInputElement>,
-    fieldToSet: keyof MyProfileInterface
+    fieldToSet: keyof IEditForm
   ) => {
-    if (fieldToSet === "avatar") {
-      if (e.target.files !== null) {
-        setImage(e.target.files[0]);
-        setUserInfo((userInfo) => ({ ...userInfo, [fieldToSet]: image }));
-      }
-    }
     setUserInfo((userInfo) => ({ ...userInfo, [fieldToSet]: e.target.value }));
   };
 
-  const editProfilePhoto = async () => {
+  const editProfilePhoto = async (event: ChangeEvent<HTMLInputElement>) => {
     const formData = new FormData();
-    if (image !== null) {
-      formData.append("avatar", image);
+    if (event.target.files !== null) {
+      formData.append("avatar", event.target.files[0]);
     }
     const beUrl = process.env.REACT_APP_BE_URL;
     const optionsPost: RequestInit = {
@@ -59,31 +44,21 @@ const EditProfileInput = () => {
 
     try {
       const response = await fetch(`${beUrl}/users/me/avatar`, optionsPost);
-      console.log("response from avatar", response);
 
-      if (response.ok) {
-        editProfilePhotoAction(true);
-      } else {
-        editProfilePhotoAction(false);
-      }
+      const data = await response.json();
+      dispatch(editProfilePhotoAction(data.avatar));
     } catch (error) {
+      console.log("Error trying to edit profile image");
       console.log(error);
     }
-    dispatch(getMyProfileAction());
   };
 
-  useEffect(() => {
-    if (image !== null) {
-      editProfilePhoto();
-    }
-  }, [image]);
-
-  const editProfileInfo = async (userInfo: MyProfileInterface) => {
+  const editProfileInfo = async () => {
     const beUrl = process.env.REACT_APP_BE_URL;
-    delete userInfo.avatar;
+    const { firstName, lastName, email } = userInfo;
     const optionsPut: RequestInit = {
       method: "PUT",
-      body: JSON.stringify(userInfo),
+      body: JSON.stringify({ firstName, lastName, email }),
       headers: {
         "Content-type": "application/json",
       },
@@ -92,15 +67,12 @@ const EditProfileInput = () => {
 
     try {
       const response = await fetch(`${beUrl}/users/me`, optionsPut);
-      if (response.ok) {
-        console.log("edit user info with success");
-      } else {
-        console.log("Error trying to edit profile info");
-      }
+      const data = await response.json();
+      dispatch(editProfileInfoAction(data)); // updates entire profile
     } catch (error) {
+      console.log("Error trying to edit profile info");
       console.log(error);
     }
-    dispatch(getMyProfileAction());
   };
 
   return (
@@ -119,12 +91,9 @@ const EditProfileInput = () => {
                 <Form.Control
                   type="file"
                   name="avatar"
-                  onChange={(e) =>
-                    onChangeHandler(
-                      e as ChangeEvent<HTMLInputElement>,
-                      "avatar"
-                    )
-                  }
+                  onChange={async (e) => {
+                    await editProfilePhoto(e as ChangeEvent<HTMLInputElement>);
+                  }}
                 />
               </Form.Group>
               {/* <Icon.Image
@@ -183,10 +152,8 @@ const EditProfileInput = () => {
             <Button
               variant="primary"
               type="submit"
-              onClick={() => {
-                editProfileInfo(userInfo);
-                editProfilePhoto();
-                // dispatch(editProfileInfoAction(true));
+              onClick={async () => {
+                await editProfileInfo();
                 navigate("/me/profile");
               }}
             >

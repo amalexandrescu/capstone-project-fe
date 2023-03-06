@@ -1,11 +1,13 @@
 // import { Middleware } from "redux";
 // import { LogInUserInfoInterface } from "../../components/login/LogIn";
+import { UserInfo } from "os";
+import { MyProfileInterface } from "../reducers/userReducer";
 import { AppDispatch, RootState } from "../store";
 export const LOG_IN = "LOG_IN";
 export const SUCCESSFULLY_LOGGED_IN = "SUCCESSFULLY_LOGGED_IN";
 export const GET_MY_PROFILE = "GET_MY_PROFILE";
-export const EDIT_SUCCESSFULLY = "EDIT_SUCCESSFULLY";
-export const EDIT_PHOTO_SUCCESSFULLY = "EDIT_PHOTO_SUCCESSFULLY";
+export const EDIT_INFO = "EDIT_INFO";
+export const EDIT_PHOTO = "EDIT_PHOTO";
 
 export const successfullyLoggedInAction = () => {
   return {
@@ -42,17 +44,17 @@ export const getMyProfileAction = () => {
   };
 };
 
-export const editProfileInfoAction = (value: boolean) => {
+export const editProfileInfoAction = (newData: MyProfileInterface) => {
   return {
-    type: EDIT_SUCCESSFULLY,
-    payload: value,
+    type: EDIT_INFO,
+    payload: newData,
   };
 };
 
-export const editProfilePhotoAction = (value: boolean) => {
+export const editProfilePhotoAction = (newData: MyProfileInterface) => {
   return {
-    type: EDIT_PHOTO_SUCCESSFULLY,
-    payload: value,
+    type: EDIT_PHOTO,
+    payload: newData,
   };
 };
 

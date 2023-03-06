@@ -2,8 +2,8 @@ import {
   LOG_IN,
   SUCCESSFULLY_LOGGED_IN,
   GET_MY_PROFILE,
-  EDIT_SUCCESSFULLY,
-  EDIT_PHOTO_SUCCESSFULLY,
+  EDIT_INFO,
+  EDIT_PHOTO,
 } from "../actions";
 
 export interface MyProfileInterface {
@@ -56,15 +56,18 @@ const userReducer = (state = initialState, action: reduxAction) => {
         ...state,
         myProfile: action.payload,
       };
-    case EDIT_SUCCESSFULLY:
+    case EDIT_INFO:
       return {
         ...state,
-        editProfileInfoSuccessfully: action.payload,
+        myProfile: {
+          ...state.myProfile,
+          ...action.payload,
+        },
       };
-    case EDIT_PHOTO_SUCCESSFULLY:
+    case EDIT_PHOTO:
       return {
         ...state,
-        editProfilePhotoSuccessfully: action.payload,
+        myProfile: { ...state.myProfile, avatar: action.payload },
       };
     default:
       return state;
