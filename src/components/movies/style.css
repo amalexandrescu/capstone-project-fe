@@ -83,3 +83,33 @@
   background-color: #53bdeb;
   border-radius: 5px;
 }
+
+.ratingStar {
+  color: orange;
+  cursor: pointer;
+  transition: color 200ms;
+}
+
+.rated {
+  color: grey;
+  cursor: pointer;
+  transition: color 200ms;
+}
+
+.radioButtons {
+  display: none;
+  /* visibility: hidden; */
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.on {
+  color: #000;
+}
+.off {
+  color: #ccc;
+}

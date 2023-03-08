@@ -2,6 +2,9 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Col, Container, Row, Button, Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Rating from "./Rating";
+import * as Icon from "react-bootstrap-icons";
 
 interface IMovie {
   title: string;
@@ -17,13 +20,48 @@ interface IMovie {
 
 const SingleMoviePage = () => {
   const params = useParams<{ movieId: string }>();
-  console.log("params: ", params.movieId);
+  // console.log("params: ", params.movieId);
   const [movie, setMovie] = useState<IMovie | null>(null);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   const [movieAlreadyAdded, setMovieAlreadyAdded] = useState<boolean>(false);
+  const [movieAlreadyRated, setMovieAlreadyRated] = useState<boolean>(false);
+  const [movieRating, setMovieRating] = useState<number>(-1);
   const [show, setShow] = useState<boolean>(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  //this will be used with the imdbID as argument
+  const fetchUserMovies = async (id: string) => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const options: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const result = await fetch(`${beUrl}/users/me/movies`, options);
+      const userMovies = await result.json();
+      const currentMovie = userMovies.find(
+        (movie: any) => movie.imdbID === params.movieId
+      );
+      if (currentMovie) {
+        setMovieAlreadyAdded(true);
+      } else {
+        setMovieAlreadyAdded(false);
+      }
+
+      if (currentMovie.userRating !== -1) {
+        setMovieAlreadyRated(true);
+        setMovieRating(currentMovie.userRating);
+      } else {
+        setMovieAlreadyRated(false);
+      }
+
+      console.log("user movies: ", userMovies);
+    } catch (error) {
+      console.log("error trying to get the movies of the user");
+      console.log(error);
+    }
+  };
 
   const fetchMovieImdbId = async (id: string) => {
     try {
@@ -58,6 +96,11 @@ const SingleMoviePage = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (params.movieId !== undefined) fetchUserMovies(params.movieId);
+  }, [params.movieId]);
+
   useEffect(() => {
     if (params.movieId !== undefined) fetchMovieImdbId(params.movieId);
   }, [params.movieId]);
@@ -75,7 +118,11 @@ const SingleMoviePage = () => {
 
             <Button
               type="button"
-              className="watchedMovieButton"
+              className={
+                movieAlreadyAdded === true
+                  ? "watchedMovieButton bg-success"
+                  : "watchedMovieButton"
+              }
               onClick={() => {
                 setButtonClicked(!buttonClicked);
                 handleShow();
@@ -93,12 +140,16 @@ const SingleMoviePage = () => {
               <Modal.Header closeButton>
                 <Modal.Title>{movie?.title}</Modal.Title>
               </Modal.Header>
-              <Modal.Body>Do you want to rate this movie now?</Modal.Body>
+              <Modal.Body>
+                <Rating userRating={movieRating} />
+              </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                   No
                 </Button>
-                <Button variant="primary">Yes</Button>
+                <Button variant="primary" onClick={() => {}}>
+                  Yes
+                </Button>
               </Modal.Footer>
             </Modal>
           </div>
@@ -114,6 +165,16 @@ const SingleMoviePage = () => {
           </div>
           <div className="movieInfoContainer mb-2">
             Duration: {movie?.runtime}
+          </div>
+          <div>
+            Click
+            <Link
+              to={`https://www.imdb.com/title/${params.movieId}`}
+              target="_blank"
+            >
+              here
+            </Link>
+            for imdb trailer
           </div>
           <div className="movieInfoContainer mb-2">Plot: {movie?.plot}</div>
         </Col>
