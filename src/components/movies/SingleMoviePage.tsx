@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import * as Icon from "react-bootstrap-icons";
 
-interface IMovie {
+export interface IMovie {
   title: string;
   actors: string;
   genre: string;
@@ -20,15 +20,46 @@ interface IMovie {
 
 const SingleMoviePage = () => {
   const params = useParams<{ movieId: string }>();
-  // console.log("params: ", params.movieId);
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&", params);
+  const [movieToAddForUser, setMovieToAddForUser] = useState<null | IMovie>(
+    null
+  );
   const [movie, setMovie] = useState<IMovie | null>(null);
   const [buttonClicked, setButtonClicked] = useState<boolean>(false);
   const [movieAlreadyAdded, setMovieAlreadyAdded] = useState<boolean>(false);
   const [movieAlreadyRated, setMovieAlreadyRated] = useState<boolean>(false);
   const [movieRating, setMovieRating] = useState<number>(-1);
   const [show, setShow] = useState<boolean>(false);
+  const [mongoId, setMongoId] = useState<string>("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const [showRatingModal, setShowRatingModal] = useState<boolean>(false);
+
+  const fetchAllMoviesFromDb = async () => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const options: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const result = await fetch(`${beUrl}/movies`, options);
+      const allMovies = await result.json();
+      const searchedMovie = allMovies.find(
+        (m: any) => m.imdbID === movie?.imdbID
+      );
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", searchedMovie);
+      if (searchedMovie) {
+        const { _id } = searchedMovie;
+        console.log("#########################", _id);
+        setMongoId(_id);
+      }
+      console.log("all movies: ", allMovies);
+    } catch (error) {
+      console.log("error trying to fetch all movies form db");
+      console.log(error);
+    }
+  };
 
   //this will be used with the imdbID as argument
   const fetchUserMovies = async (id: string) => {
@@ -40,20 +71,27 @@ const SingleMoviePage = () => {
       };
       const result = await fetch(`${beUrl}/users/me/movies`, options);
       const userMovies = await result.json();
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@", userMovies);
       const currentMovie = userMovies.find(
-        (movie: any) => movie.imdbID === params.movieId
+        (movie: any) => movie.watchedMovie.imdbID === params.movieId
+        //params.movieId is imdbID of the movie
       );
-      if (currentMovie) {
-        setMovieAlreadyAdded(true);
-      } else {
+      console.log("current movie: ", currentMovie);
+      //undefined if there is no movie
+      if (currentMovie === undefined) {
         setMovieAlreadyAdded(false);
-      }
-
-      if (currentMovie.userRating !== -1) {
-        setMovieAlreadyRated(true);
-        setMovieRating(currentMovie.userRating);
-      } else {
+        // setMovieToAddForUser(movie);
         setMovieAlreadyRated(false);
+        setMovieRating(-1);
+      } else {
+        setMovieAlreadyAdded(true);
+        if (currentMovie.userRating !== -1) {
+          setMovieAlreadyRated(true);
+          setMovieRating(currentMovie.userRating);
+        } else {
+          setMovieAlreadyRated(false);
+          setMovieRating(-1);
+        }
       }
 
       console.log("user movies: ", userMovies);
@@ -90,20 +128,73 @@ const SingleMoviePage = () => {
         imdbID: imdbID,
         imdbRating: imdbRating,
       });
-      return movie;
+      // return movie;
     } catch (error) {
       console.log("error while trying to fetch movie by imdbID from omdp api");
       console.log(error);
     }
   };
 
+  //mongoId as argument
+  const addMovieForUser = async (id: string) => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const optionsPost: RequestInit = {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({ movieId: id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await fetch(`${beUrl}/users/me/movies`, optionsPost);
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log("error trying to add movie to user");
+      console.log(error);
+    }
+  };
+
+  //imdbID as argument
+  const removeMovieFromUser = async (id: string) => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const optionsPut: RequestInit = {
+        method: "PUT",
+        credentials: "include",
+        body: JSON.stringify({ imdbID: id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch(`${beUrl}/users/me/movies`, optionsPut);
+    } catch (error) {
+      console.log("error trying to remove a movei from this user");
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    if (params.movieId !== undefined) fetchUserMovies(params.movieId);
+    if (movie) fetchUserMovies(movie.imdbID);
+  }, [movie]);
+
+  //fetches the current movie info from omdb api
+  useEffect(() => {
+    if (params.movieId !== undefined) {
+      fetchMovieImdbId(params.movieId);
+    }
   }, [params.movieId]);
 
   useEffect(() => {
-    if (params.movieId !== undefined) fetchMovieImdbId(params.movieId);
-  }, [params.movieId]);
+    if (movie) fetchAllMoviesFromDb();
+  }, [movie]);
+
+  useEffect(() => {}, []);
+
+  console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", movieAlreadyRated);
 
   return (
     <Container fluid className="bg-info">
@@ -116,6 +207,26 @@ const SingleMoviePage = () => {
               <div>no poster</div>
             )}
 
+            <div className="ratingSystemContainer">
+              Your rating
+              <Button onClick={() => setShowRatingModal(true)}>
+                <Icon.Star /> Rate
+              </Button>
+              <Rating
+                userRating={movieRating}
+                show={showRatingModal}
+                close={() => setShowRatingModal(false)}
+                imdbID={movie?.imdbID ? movie.imdbID : ""}
+                movieTitle={movie?.title ? movie.title : ""}
+                mongoId={mongoId}
+                movieAlreadyRated={movieAlreadyRated}
+                movieAlreadyAdded={movieAlreadyAdded}
+                handleRating={setMovieAlreadyRated}
+                handleAlreadyAdded={setMovieAlreadyAdded}
+                handleMovieRating={setMovieRating}
+              />
+              ;
+            </div>
             <Button
               type="button"
               className={
@@ -123,31 +234,51 @@ const SingleMoviePage = () => {
                   ? "watchedMovieButton bg-success"
                   : "watchedMovieButton"
               }
-              onClick={() => {
-                setButtonClicked(!buttonClicked);
-                handleShow();
-                //get all the movies of the current user
-                //check by imdbID if the movie is already there
-                //maybe use movieAlready there
-                //if there is, the button should be green and "Watched"
-                //if the movie is not there, the button should be blue with "add to watched movie"
-                //onClick, perform a post
+              onClick={async () => {
+                if (movieAlreadyAdded) {
+                  handleShow();
+                  //
+                } else {
+                  //add movie to user movie list
+                  if (
+                    movie?.imdbID !== null &&
+                    movie?.imdbID !== undefined &&
+                    mongoId !== ""
+                  ) {
+                    await addMovieForUser(mongoId);
+                    setMovieAlreadyAdded(true);
+                    setMovieAlreadyRated(false);
+                    setMovieRating(-1);
+                  }
+                }
               }}
             >
               {!movieAlreadyAdded ? "Add to watched movie " : "Watched"}
             </Button>
+
             <Modal show={show} onHide={handleClose}>
               <Modal.Header closeButton>
                 <Modal.Title>{movie?.title}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <Rating userRating={movieRating} />
+                Are you sure you want to delete this movie from your list?
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={handleClose}>
                   No
                 </Button>
-                <Button variant="primary" onClick={() => {}}>
+                <Button
+                  variant="primary"
+                  onClick={async () => {
+                    if (movie?.imdbID) {
+                      await removeMovieFromUser(movie?.imdbID);
+                      setMovieAlreadyAdded(false);
+                      setMovieAlreadyRated(false);
+                      setMovieRating(-1);
+                      handleClose();
+                    }
+                  }}
+                >
                   Yes
                 </Button>
               </Modal.Footer>

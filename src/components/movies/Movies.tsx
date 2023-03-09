@@ -9,12 +9,16 @@ import {
   ListGroup,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import SingleMoviePage, { IMovie } from "./SingleMoviePage";
 
 const Movies = () => {
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
+  const [movie, setMovie] = useState<IMovie | null>(null);
+  const [createdOk, setCreatedOk] = useState<boolean>(false);
   // const [fetchedMovies, setFetechedMovies] = useState<Array<{ poster: string, title: string, imdbID: string }>>([]);
+
   const [fetchedMovies, setFetechedMovies] = useState<
     Array<{
       Title: string;
@@ -28,6 +32,75 @@ const Movies = () => {
 
   const navigate = useNavigate();
 
+  const addNewMovieToDb = async (movieInfo: IMovie) => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const optionsPOST: RequestInit = {
+        method: "POST",
+        body: JSON.stringify(movieInfo),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      };
+
+      const response = await fetch(`${beUrl}/movies`, optionsPOST);
+      const data = await response.json();
+      console.log("movie added to my db: ", data);
+      setCreatedOk(true);
+      // navigate(`/movies/${movieInfo.imdbID}`);
+    } catch (error) {
+      console.log("error trying to add new movie to db");
+      console.log(error);
+    }
+  };
+
+  const fetchMovieImdbId = async (id: string) => {
+    try {
+      const response: any = await fetch(
+        `http://www.omdbapi.com/?i=${id}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`
+      );
+      const {
+        Actors,
+        Genre,
+        Plot,
+        Poster,
+        Released,
+        Runtime,
+        Title,
+        imdbID,
+        imdbRating,
+      } = await response.json();
+      const movieToAdd: IMovie = {
+        actors: Actors,
+        title: Title,
+        genre: Genre,
+        plot: Plot,
+        poster: Poster,
+        released: Released,
+        runtime: Runtime,
+        imdbID: imdbID,
+        imdbRating: imdbRating,
+      };
+      await addNewMovieToDb(movieToAdd);
+      setMovie({
+        actors: Actors,
+        title: Title,
+        genre: Genre,
+        plot: Plot,
+        poster: Poster,
+        released: Released,
+        runtime: Runtime,
+        imdbID: imdbID,
+        imdbRating: imdbRating,
+      });
+      // return movie;
+    } catch (error) {
+      console.log("error while trying to fetch movie by imdbID from omdp api");
+      console.log(error);
+    }
+  };
+
   const fetchMovieByQuery = async (query: string) => {
     try {
       const response = await fetch(
@@ -35,7 +108,7 @@ const Movies = () => {
       );
       const movie = await response.json();
 
-      console.log("harry potter: ", movie);
+      console.log("ul list of movies ", movie);
       if (movie.Search.length < 10) {
         return movie.Search;
       } else {
@@ -50,6 +123,13 @@ const Movies = () => {
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrentSearchedMovie(e.target.value);
   };
+
+  // useEffect(() => {
+  //   if (movie) {
+  //     addNewMovieToDb(movie);
+  //     setCreatedOk(false);
+  //   }
+  // }, [movie]);
 
   return (
     <Container fluid className="bg-info">
@@ -78,25 +158,31 @@ const Movies = () => {
           </div>
           <ListGroup as="ul" className="movieSearchlistGroup">
             {fetchedMovies &&
-              fetchedMovies.map((movie) => {
+              fetchedMovies.map((m) => {
                 return (
                   <ListGroup.Item
                     as="li"
-                    key={movie.imdbID}
+                    key={m.imdbID}
                     className="movieSearchLi d-flex align-items-center"
-                    onClick={() => {
+                    onClick={async () => {
+                      await fetchMovieImdbId(m.imdbID);
                       setCurrentSearchedMovie("");
-                      navigate(`/movies/${movie.imdbID}`);
+                      navigate(`/movies/${m.imdbID}`);
+                      // setMovie(null);
+                      // if (createdOk) {
+                      //   // navigate(`/movies/${m.imdbID}`);
+                      //   setCreatedOk(false);
+                      // }
                     }}
                   >
                     <span className="moviePosterSearchLi mr-2">
-                      {movie.Poster !== "N/A" ? (
-                        <img src={movie.Poster} alt="movie poster" />
+                      {m.Poster !== "N/A" ? (
+                        <img src={m.Poster} alt="movie poster" />
                       ) : (
                         <Icon.ImageFill className="moviePosterSearchIcon" />
                       )}
                     </span>
-                    <span>{movie.Title}</span>
+                    <span>{m.Title}</span>
                   </ListGroup.Item>
                 );
               })}

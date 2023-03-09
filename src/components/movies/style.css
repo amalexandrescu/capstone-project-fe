@@ -113,3 +113,11 @@ button {
 .off {
   color: #ccc;
 }
+
+.ratingSystemContainer {
+  position: absolute;
+  /* background-color: red; */
+  color: white;
+  bottom: 75px;
+  right: 20px;
+}
