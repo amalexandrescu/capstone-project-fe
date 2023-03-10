@@ -210,7 +210,7 @@ const SingleMoviePage = () => {
             <div className="ratingSystemContainer">
               Your rating
               <Button onClick={() => setShowRatingModal(true)}>
-                <Icon.Star /> Rate
+                <Icon.Star /> {movieAlreadyRated ? "Rated" : "Rate"}
               </Button>
               <Rating
                 userRating={movieRating}
@@ -221,11 +221,11 @@ const SingleMoviePage = () => {
                 mongoId={mongoId}
                 movieAlreadyRated={movieAlreadyRated}
                 movieAlreadyAdded={movieAlreadyAdded}
-                handleRating={setMovieAlreadyRated}
+                handleRatingStatus={setMovieAlreadyRated}
                 handleAlreadyAdded={setMovieAlreadyAdded}
                 handleMovieRating={setMovieRating}
+                addMovieForUser={addMovieForUser}
               />
-              ;
             </div>
             <Button
               type="button"

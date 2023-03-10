@@ -1,5 +1,4 @@
 import "./style.css";
-import * as Icon from "react-bootstrap-icons";
 import { useEffect, useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
@@ -12,9 +11,10 @@ interface IRatingComponentProps {
   mongoId: string;
   movieAlreadyRated: boolean;
   movieAlreadyAdded: boolean;
-  handleRating: any;
-  handleAlreadyAdded: any;
-  handleMovieRating: any;
+  handleRatingStatus: any; //setState for alreadyRated
+  handleAlreadyAdded: any; //setState for alreadyAdded
+  handleMovieRating: any; //setState for the rating from -1 to 10
+  addMovieForUser: any;
 }
 
 const Rating = ({
@@ -26,9 +26,10 @@ const Rating = ({
   mongoId,
   movieAlreadyRated,
   movieAlreadyAdded,
-  handleRating,
+  handleRatingStatus,
   handleAlreadyAdded,
   handleMovieRating,
+  addMovieForUser,
 }: IRatingComponentProps) => {
   const newArray = Array.from({ length: 10 }, (value, index) => index);
   const [rating, setRating] = useState(0);
@@ -103,18 +104,16 @@ const Rating = ({
           variant="primary"
           disabled={rating <= 0 ? true : false}
           onClick={async () => {
-            await rateMovie(mongoId, rating);
-            handleRating(true);
-            // handleMovieRating(rating);
-            // setRating(0);
+            if (movieAlreadyAdded) {
+              await rateMovie(mongoId, rating);
+              handleRatingStatus(true);
+            } else {
+              await addMovieForUser(mongoId);
+              await rateMovie(mongoId, rating);
+              handleRatingStatus(true);
+              handleAlreadyAdded(true);
+            }
             close();
-            // if (movie?.imdbID) {
-            //   await removeMovieFromUser(movie?.imdbID);
-            //   setMovieAlreadyAdded(false);
-            //   setMovieAlreadyRated(false);
-            //   setMovieRating(-1);
-            //   handleClose();
-            // }
           }}
         >
           Rate

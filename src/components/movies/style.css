@@ -121,3 +121,26 @@ button {
   bottom: 75px;
   right: 20px;
 }
+
+.movie-cover {
+  width: 99%;
+  transition: 0.3s;
+  opacity: 0.7;
+  height: 135px;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.movie-row {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+.movieCarouselItem {
+  position: relative;
+}
+
+.badgeContainer {
+  position: absolute;
+  top: -2px;
+}

@@ -7,17 +7,24 @@ import {
   InputGroup,
   Button,
   ListGroup,
+  Carousel,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import SingleMoviePage, { IMovie } from "./SingleMoviePage";
+import { IMovie } from "./SingleMoviePage";
+import CarouselManager from "./CarouselManager";
+import { ISingleMovieCarousel } from "./SingleMovieCarousel";
 
 const Movies = () => {
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
   const [movie, setMovie] = useState<IMovie | null>(null);
   const [createdOk, setCreatedOk] = useState<boolean>(false);
-  // const [fetchedMovies, setFetechedMovies] = useState<Array<{ poster: string, title: string, imdbID: string }>>([]);
+  const [userMovies, setUserMovies] = useState<ISingleMovieCarousel[]>([]);
+  const [moviesCounter, setMoviesCounter] = useState<number>(0);
+  const [recentlySearchedMovies, setRecentlySearchedMovies] = useState<
+    string[]
+  >([]);
 
   const [fetchedMovies, setFetechedMovies] = useState<
     Array<{
@@ -28,7 +35,6 @@ const Movies = () => {
       Year: string;
     }>
   >([]);
-  const [finishedQuery, setFinishedQuery] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -120,16 +126,42 @@ const Movies = () => {
     }
   };
 
+  const fetchAllUserMovies = async () => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const options: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const result = await fetch(`${beUrl}/users/me/movies`, options);
+      const allUserMovies = await result.json();
+      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@", allUserMovies);
+      if (allUserMovies.length > 6) {
+        setUserMovies([...allUserMovies, ...allUserMovies]);
+        setMoviesCounter(Math.floor(allUserMovies.length / 6) + 1);
+      } else {
+        setUserMovies(allUserMovies);
+      }
+
+      console.log("user movies: ", allUserMovies);
+    } catch (error) {
+      console.log("error trying to get the movies of the user");
+      console.log(error);
+    }
+  };
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrentSearchedMovie(e.target.value);
   };
 
-  // useEffect(() => {
-  //   if (movie) {
-  //     addNewMovieToDb(movie);
-  //     setCreatedOk(false);
-  //   }
-  // }, [movie]);
+  useEffect(() => {
+    fetchAllUserMovies();
+  }, []);
+
+  console.log(
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+    recentlySearchedMovies
+  );
 
   return (
     <Container fluid className="bg-info">
@@ -166,13 +198,12 @@ const Movies = () => {
                     className="movieSearchLi d-flex align-items-center"
                     onClick={async () => {
                       await fetchMovieImdbId(m.imdbID);
+                      setRecentlySearchedMovies((recentlySearchedMovies) => [
+                        ...recentlySearchedMovies,
+                        m.imdbID,
+                      ]);
                       setCurrentSearchedMovie("");
                       navigate(`/movies/${m.imdbID}`);
-                      // setMovie(null);
-                      // if (createdOk) {
-                      //   // navigate(`/movies/${m.imdbID}`);
-                      //   setCreatedOk(false);
-                      // }
                     }}
                   >
                     <span className="moviePosterSearchLi mr-2">
@@ -187,6 +218,34 @@ const Movies = () => {
                 );
               })}
           </ListGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>Recently searched movies</Col>
+      </Row>
+      <Row>
+        <div>{recentlySearchedMovies}</div>
+        <Col className="d-flex">
+          <div className="mr-2">test</div>
+          <div className="mr-2">test</div>
+          <div className="mr-2">test</div>
+          <div className="mr-2">test</div>
+          <div>test</div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>Your movies</Col>
+      </Row>
+      <Row>
+        <Col>
+          {userMovies.length !== 0 ? (
+            <CarouselManager
+              moviesCounter={moviesCounter}
+              userMovies={userMovies}
+            />
+          ) : (
+            <></>
+          )}
         </Col>
       </Row>
     </Container>
