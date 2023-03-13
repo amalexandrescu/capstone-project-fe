@@ -245,10 +245,10 @@ const Movies = () => {
       </Row>
       <Row>
         {recents &&
-          recents.map((movieImdbId: string) => {
+          recents.map((movieImdbId: string, index) => {
             return (
               <Col className="d-flex">
-                <SingleMovieCard key={movieImdbId} id={movieImdbId} />
+                <SingleMovieCard key={index} id={movieImdbId} />
               </Col>
             );
           })}
