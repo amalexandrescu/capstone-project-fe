@@ -15,6 +15,10 @@ import { useNavigate } from "react-router";
 import { IMovie } from "./SingleMoviePage";
 import CarouselManager from "./CarouselManager";
 import { ISingleMovieCarousel } from "./SingleMovieCarousel";
+import { addNewRecentMovieAction } from "../../redux/actions";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
+import { useSelector } from "react-redux";
+import SingleMovieCard from "./SingleMovieCard";
 
 const Movies = () => {
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
@@ -22,9 +26,7 @@ const Movies = () => {
   const [createdOk, setCreatedOk] = useState<boolean>(false);
   const [userMovies, setUserMovies] = useState<ISingleMovieCarousel[]>([]);
   const [moviesCounter, setMoviesCounter] = useState<number>(0);
-  const [recentlySearchedMovies, setRecentlySearchedMovies] = useState<
-    string[]
-  >([]);
+  const [recents, setRecents] = useState<string[]>([]);
 
   const [fetchedMovies, setFetechedMovies] = useState<
     Array<{
@@ -37,6 +39,12 @@ const Movies = () => {
   >([]);
 
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  const recentlySearchedMovies = useAppSelector(
+    (state) => state.user.recentlySearchedMovies
+  );
 
   const addNewMovieToDb = async (movieInfo: IMovie) => {
     try {
@@ -158,10 +166,25 @@ const Movies = () => {
     fetchAllUserMovies();
   }, []);
 
+  useEffect(() => {
+    if (recentlySearchedMovies.length <= 5) {
+      setRecents([...recentlySearchedMovies]);
+    } else {
+      setRecents([
+        ...recentlySearchedMovies.slice(
+          recentlySearchedMovies.length - 5,
+          recentlySearchedMovies.length
+        ),
+      ]);
+    }
+  }, [recentlySearchedMovies]);
+
   console.log(
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
     recentlySearchedMovies
   );
+
+  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", recents);
 
   return (
     <Container fluid className="bg-info">
@@ -198,10 +221,7 @@ const Movies = () => {
                     className="movieSearchLi d-flex align-items-center"
                     onClick={async () => {
                       await fetchMovieImdbId(m.imdbID);
-                      setRecentlySearchedMovies((recentlySearchedMovies) => [
-                        ...recentlySearchedMovies,
-                        m.imdbID,
-                      ]);
+                      dispatch(addNewRecentMovieAction(m.imdbID));
                       setCurrentSearchedMovie("");
                       navigate(`/movies/${m.imdbID}`);
                     }}
@@ -224,14 +244,14 @@ const Movies = () => {
         <Col>Recently searched movies</Col>
       </Row>
       <Row>
-        <div>{recentlySearchedMovies}</div>
-        <Col className="d-flex">
-          <div className="mr-2">test</div>
-          <div className="mr-2">test</div>
-          <div className="mr-2">test</div>
-          <div className="mr-2">test</div>
-          <div>test</div>
-        </Col>
+        {recents &&
+          recents.map((movieImdbId: string) => {
+            return (
+              <Col className="d-flex">
+                <SingleMovieCard key={movieImdbId} id={movieImdbId} />
+              </Col>
+            );
+          })}
       </Row>
       <Row>
         <Col>Your movies</Col>
