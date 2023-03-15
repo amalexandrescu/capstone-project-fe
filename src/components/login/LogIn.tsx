@@ -19,6 +19,7 @@ import {
 import { AppDispatch, useAppDispatch, useAppSelector } from "../../redux/store";
 // import { ThunkAction } from "redux-thunk";
 import { Link } from "react-router-dom";
+import * as Icon from "react-bootstrap-icons";
 
 export interface LogInUserInfoInterface {
   email: string;
@@ -75,48 +76,60 @@ const LogIn = () => {
   };
   return (
     <Container fluid className="loginContainer">
-      <Row className="justify-content-center">
-        <div className="formContainer bg-success">
+      <Row className="customRow justify-content-center align-items-center">
+        <div className="formContainer">
+          <div className="d-flex justify-content-center">
+            <div className="loginUserIconContainer mb-3">
+              <Icon.Person className="logInUserIcon" />
+            </div>
+          </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={userInfo.email}
-                onChange={(e) =>
-                  onChangeHandler(e as ChangeEvent<HTMLInputElement>, "email")
-                }
-              />
+              {/* <Form.Label>Email address</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.PersonFill className="loginIcons" />
+                <Form.Control
+                  type="email"
+                  placeholder="Email"
+                  value={userInfo.email}
+                  className="loginInput"
+                  onChange={(e) =>
+                    onChangeHandler(e as ChangeEvent<HTMLInputElement>, "email")
+                  }
+                />
+              </div>
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={userInfo.password}
-                onChange={(e) =>
-                  onChangeHandler(
-                    e as ChangeEvent<HTMLInputElement>,
-                    "password"
-                  )
-                }
-              />
+              {/* <Form.Label>Password</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.LockFill className="loginIcons" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={userInfo.password}
+                  onChange={(e) =>
+                    onChangeHandler(
+                      e as ChangeEvent<HTMLInputElement>,
+                      "password"
+                    )
+                  }
+                />
+              </div>
             </Form.Group>
-            <Button
-              variant="primary"
+            <button
+              className="logInButton"
               type="submit"
               onClick={() => {
                 logInFunction(userInfo);
                 setLogInButtonClicked(true);
               }}
             >
-              Log in
-            </Button>
+              LOG IN
+            </button>
           </Form>
           <div className="pt-3">
             If you don't have an account click <Link to="/register">here </Link>

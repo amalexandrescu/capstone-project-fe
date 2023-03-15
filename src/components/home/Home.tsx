@@ -87,16 +87,16 @@ const Home = () => {
   }, [currentSearch]);
 
   return (
-    <Container fluid className="bg-info">
-      <Row>
-        <Col>
-          <div className="pt-2 flex-grow-1  mr-2 pb-0">
+    <Container fluid className="mainContainer">
+      <Row className="justify-content-center">
+        <Col className="d-flex justify-content-center">
+          <div className="pt-3 mr-2 pb-0 testing">
             <InputGroup>
-              <InputGroup.Text id="basic-addon1">
+              <InputGroup.Text id="search-icon-container">
                 <Icon.Search />
               </InputGroup.Text>
               <Form.Control
-                className="input-search-bg"
+                className="homeInputSearch"
                 placeholder="Search user by name"
                 value={currentSearch}
                 onChange={async (e) => {

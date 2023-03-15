@@ -1,16 +1,102 @@
+:root {
+  /* --secondary-bg-color: #202c33; */
+  --main-bg-color: #0b132b;
+  --dark-writing-color: #1c2541;
+  --input-bg-color: #e8f0fe;
+  --navbar-active-color: #d8315b;
+  --navbar-hover-color: #3e7cb1;
+  --hover-bg-color: #202c33;
+  --icon-color: #aebac1;
+  --rated-star-icon: #ffb627;
+  /* --sent-message-color: #005c4b; */
+  /* --secondary-icon-color: #53bdeb; */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .loginContainer {
   height: 100vh;
   background-color: var(--main-bg-color);
 }
 
-.formContainer {
-  padding: 40px 40px;
-
-  width: 500px;
-  margin-top: 200px;
-  border-radius: 5px;
+.customRow {
+  height: 100vh !important;
 }
 
-#logInButton {
-  /* margin-inline: auto; */
+.logInButton {
+  width: 100%;
+  border-radius: 50px;
+  font-size: 20px;
+  padding-block: 5px;
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+}
+
+.loginInputContainer {
+  width: 100%;
+  background-color: var(--input-bg-color);
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  background-color: transparent !important;
+  border: 0px;
+  outline: none;
+  width: 100% !important;
+  padding-right: 150px !important;
+  box-shadow: none;
+  color: var(--dark-writing-color);
+  cursor: default;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+  outline: none;
+  color: var(--dark-writing-color);
+}
+
+.formContainer {
+  padding: 40px 40px;
+  width: 500px;
+  /* margin-top: 200px; */
+  border-radius: 30px;
+  position: relative;
+  text-align: center;
+  background-color: white;
+}
+
+.loginIcons {
+  font-size: 20px;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateX(-50%) translateY(-50%);
+  color: var(--dark-writing-color);
+}
+
+.loginUserIconContainer {
+  position: relative;
+  background-color: var(--main-bg-color);
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
+.logInUserIcon {
+  color: var(--input-bg-color);
+  position: absolute;
+  font-size: 70px;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }

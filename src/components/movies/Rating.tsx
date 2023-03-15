@@ -74,7 +74,7 @@ const Rating = ({
   };
 
   return (
-    <Modal show={show} onHide={close}>
+    <Modal className="rateModal" show={show} onHide={close}>
       <Modal.Header closeButton>
         <Modal.Title>Rate {movieTitle}</Modal.Title>
       </Modal.Header>
@@ -96,28 +96,29 @@ const Rating = ({
               </button>
             );
           })}
-          <div>the rating is: {rating} </div>
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="primary"
+        <button
+          className="ratingModalButton"
           disabled={rating <= 0 ? true : false}
           onClick={async () => {
             if (movieAlreadyAdded) {
               await rateMovie(mongoId, rating);
               handleRatingStatus(true);
+              handleMovieRating(rating);
             } else {
               await addMovieForUser(mongoId);
               await rateMovie(mongoId, rating);
               handleRatingStatus(true);
               handleAlreadyAdded(true);
+              handleMovieRating(rating);
             }
             close();
           }}
         >
           Rate
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

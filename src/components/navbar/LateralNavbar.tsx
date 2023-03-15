@@ -51,7 +51,7 @@ const LateralNavbar = () => {
       >
         <div className="d-flex align-items-center mb-3">
           <Icon.PersonCircle className="navbar-icons mr-2" />
-          <span>Profile</span>
+          <span>My Profile</span>
         </div>
       </NavLink>
       <NavLink

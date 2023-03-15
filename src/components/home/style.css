@@ -1,0 +1,32 @@
+.mainContainer {
+  background-color: var(--input-bg-color) !important;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.testing {
+  width: 500px !important;
+}
+
+.homeInputSearch,
+.homeInputSearch:focus {
+  background-color: var(--main-bg-color) !important;
+  border-left: 0 !important;
+  outline: none !important;
+  border-color: var(--icon-color) !important;
+  box-shadow: none !important;
+  color: var(--input-bg-color) !important;
+}
+
+::placeholder {
+  color: var(--input-bg-color) !important;
+}
+
+#search-icon-container {
+  background-color: var(--main-bg-color);
+  border-color: var(--icon-color);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  color: var(--navbar-active-color);
+}
