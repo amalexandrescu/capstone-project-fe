@@ -111,6 +111,7 @@ const LogIn = () => {
                   type="password"
                   placeholder="Password"
                   value={userInfo.password}
+                  className="loginInput"
                   onChange={(e) =>
                     onChangeHandler(
                       e as ChangeEvent<HTMLInputElement>,

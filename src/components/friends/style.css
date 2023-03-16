@@ -1,22 +1,345 @@
-.friend-info-container {
-  width: 80%;
-  height: 500px;
-  background-color: white;
+.zzz {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 40px;
+  width: 40px;
+  background-color: var(--main-bg-color);
+  border-radius: 50%;
+  overflow: hidden;
+  margin-top: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  pointer-events: auto;
+  color: transparent;
+  background-color: transparent;
+}
+
+div.zzz input[type="file"]::file-selector-button {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: transparent;
+  background-color: transparent;
+  z-index: 1;
+  cursor: pointer;
+  display: none;
+  pointer-events: auto;
+}
+
+.editCoverImageIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  background-color: var(--main-bg-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 10px;
+  color: var(--navbar-active-color);
+}
+
+input[type="text"].editProfileInput,
+input[type="email"].editProfileInput,
+input[type="password"].editProfileInput {
+  background-color: var(--main-bg-color) !important;
+  /* background-color: transparent !important; */
+  border: 0px;
+  outline: none;
+  width: 100% !important;
+  padding-right: 150px !important;
+  box-shadow: none;
+  color: var(--input-bg-color);
+  cursor: default;
+}
+
+input[type="text"].editProfileInput:focus,
+input[type="email"].editProfileInput:focus,
+input[type="password"].editProfileInput:focus {
+  outline: none;
+  color: var(--navbar-active-color);
+}
+
+.friendInfoContainer {
+  /* height: 300px; */
+  height: 250px;
+  width: 100% !important;
+  /* background-color: white; */
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .coverImage {
-  height: 80%;
+  height: 100%;
   width: 100%;
+  padding-inline: -15px !important;
   background-repeat: no-repeat;
   background-size: cover;
+  padding-inline: -15px !important;
+  border-radius: 5px;
 }
 
-.singleMovieModal:hover {
+.coverImageContainer {
+  position: absolute;
+  top: 0;
+  height: 80%;
+  width: 100%;
+}
+
+.profileImageContainer {
+  height: 60px;
+  background: linear-gradient(var(--input-bg-color), var(--main-bg-color));
+  /* background-color: var(--main-bg-color); */
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  width: 90%;
+  justify-content: space-between;
+  transform: translateY(-10%);
+}
+
+.profileImage {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: var(--input-bg-color);
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.profileName {
+  height: 60px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-weight: bold;
+  color: var(--main-bg-color);
+}
+
+.profileIconFriendPage {
+  font-size: 50px;
+  color: var(--main-bg-color);
+}
+
+.followButton {
+  background-color: var(--main-bg-color);
+  height: 30px;
+  width: 100px;
+  margin-block: auto;
+  font-weight: bold;
+  color: var(--navbar-active-color);
+  padding: 10px 15px;
   cursor: pointer;
-  background-color: bisque;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+}
+
+.topRatedMovies {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.topRatedMovies h5 {
+  display: flex;
+  justify-content: center;
+}
+
+.topRatedMovies div {
+  display: flex;
+  align-items: start;
+}
+
+.fiveMoviesList {
+  width: 60%;
+  margin-inline: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.topRatedMovies .card {
+  height: 300px;
+  width: 200px;
+  background-color: var(--main-bg-color);
+  border: none;
+  color: var(--input-bg-color);
+}
+
+.topRatedMovies .card-img-top {
+  height: 230px;
+  width: 200px;
+  padding: 15px;
+  border-radius: 9%;
+}
+
+.topRatedMovies .card-body,
+.topRatedMovies .card-body h5 {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.topRatedMovies .card-title {
+  width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important; /* number of lines to show */
+  line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.fiveCardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.darkBackground,
+.darkBackground button {
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  padding: 10px 0;
+  border-radius: 5px;
+}
+
+.darkBackground button {
+  padding: 0 0;
 }
 
 .usualContainer {
   height: 100vh;
   overflow-y: scroll;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 731px) and (max-width: 991px) {
+  .friendInfoContainer {
+    height: 400px;
+  }
+
+  .profileImageContainer {
+    height: 70px;
+    width: 90%;
+    transform: translateY(-35%);
+  }
+
+  .profileImage {
+    height: 70px;
+    width: 70px;
+  }
+
+  .profileName {
+    height: 70px;
+  }
+
+  .profileIconFriendPage {
+    font-size: 50px;
+  }
+
+  .followButton {
+    height: 30px;
+  }
+
+  .fiveMoviesList {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  .coverImageContainer {
+    height: 90%;
+  }
+
+  .friendInfoContainer {
+    height: 500px;
+  }
+
+  .profileImageContainer {
+    height: 80px;
+    width: 90%;
+    transform: translateY(10%);
+  }
+
+  .profileImage {
+    height: 80px;
+    width: 80px;
+  }
+
+  .profileName {
+    height: 80px;
+  }
+
+  .profileIconFriendPage {
+    font-size: 60px;
+  }
+
+  .followButton {
+    height: 40px;
+  }
+
+  .fiveMoviesList {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 1181px) {
+  .coverImageContainer {
+    height: 90%;
+  }
+
+  .friendInfoContainer {
+    height: 600px;
+  }
+
+  .profileIconFriendPage {
+    font-size: 70px;
+  }
+
+  .profileImageContainer {
+    height: 90px;
+    width: 90%;
+    transform: translateY(10%);
+  }
+
+  .profileImage {
+    height: 90px;
+    width: 90px;
+  }
+
+  .profileName {
+    height: 90px;
+  }
+
+  .followButton {
+    height: 40px;
+  }
+
+  .fiveMoviesList {
+    width: 30%;
+  }
+
+  /* .topRatedMovies {
+    background-color: green !important;
+  } */
 }

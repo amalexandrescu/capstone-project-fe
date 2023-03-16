@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { getMyProfileAction } from "../../redux/actions";
-import { useAppDispatch } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import {
   Container,
   Row,
@@ -14,6 +14,7 @@ import "./style.css";
 import { useNavigate } from "react-router";
 
 const Home = () => {
+  const myProfileId = useAppSelector((state) => state.user.myProfile._id);
   const [allUsers, setAllUsers] = useState<
     Array<{
       _id: string;
@@ -121,6 +122,11 @@ const Home = () => {
                     onClick={() => {
                       setCurrentSearch("");
                       navigate(`/friends/${user._id}`);
+                      // if (user._id.toString() === myProfileId.toString()) {
+                      //   navigate(`/users/me/profile/${myProfileId}`);
+                      // } else {
+                      //   navigate(`/friends/${user._id}`);
+                      // }
                     }}
                   >
                     <span className="moviePosterSearchLi mr-2">

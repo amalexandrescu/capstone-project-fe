@@ -44,9 +44,12 @@
   position: relative;
 }
 
-input[type="email"],
+/* input[type="email"],
 input[type="password"],
-input[type="text"] {
+input[type="text"], */
+input[type="text"].loginInput,
+input[type="email"].loginInput,
+input[type="password"].loginInput {
   background-color: transparent !important;
   border: 0px;
   outline: none;
@@ -57,9 +60,13 @@ input[type="text"] {
   cursor: default;
 }
 
-input[type="email"]:focus,
+/* input[type="email"]:focus,
 input[type="password"]:focus,
-input[type="text"]:focus {
+input[type="text"]:focus  */
+
+input[type="text"].loginInput:focus,
+input[type="email"].loginInput:focus,
+input[type="password"].loginInput:focus {
   outline: none;
   color: var(--dark-writing-color);
 }

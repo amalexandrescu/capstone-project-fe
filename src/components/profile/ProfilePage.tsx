@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store";
 import EditProfileInput from "./EditProfileInput";
 import { useNavigate } from "react-router";
+import SingleMoviePage from "../movies/SingleMoviePage";
+// import SingleUserPage from "../friends/SingleUserPage";
 
 interface User {
   firstName: string;
@@ -29,40 +31,40 @@ const ProfilePage = () => {
   useEffect(() => {}, []);
 
   return (
-    <Container fluid className="mainPageContainer">
-      <Row className="justify-content-center">
-        <Col className="bg-success  d-flex align-items-center justify-content-between mt-5">
-          <div className="profileImageContainer">
-            {myProfile.avatar === "" ? (
-              <Icon.PersonFill className="profileIcon" />
-            ) : (
-              <img src={myProfile.avatar} alt="avatar" />
-            )}
-          </div>
-          {!editButtonClicked && (
-            <div className="profileInfoContainer">
-              <h6 className="mb-0">First name</h6>
-              <div>{myProfile.firstName}</div>
-              <h6 className="mb-0 mt-1">Last name</h6>
-              <div>{myProfile.lastName}</div>
-              <h6 className="mb-0 mt-1"> Email address</h6>
-              <div>{myProfile.email}</div>
-              <Button
-                type="button"
-                onClick={(e) => {
-                  setEditButtonClicked(true);
-                  navigate("/me/profile/edit");
-                }}
-                className="mt-3"
-              >
-                Edit profile
-              </Button>
-            </div>
-          )}
-          {/* {editButtonClicked && <EditProfileInput />} */}
-        </Col>
-      </Row>
-    </Container>
+    <div>here has to come my profile page</div>
+    // <Container fluid className="mainPageContainer">
+    //   <Row className="justify-content-center">
+    //     <Col className="bg-success  d-flex align-items-center justify-content-between mt-5">
+    //       <div className="profileImageContainer">
+    //         {myProfile.avatar === "" ? (
+    //           <Icon.PersonFill className="profileIcon" />
+    //         ) : (
+    //           <img src={myProfile.avatar} alt="avatar" />
+    //         )}
+    //       </div>
+    //       {!editButtonClicked && (
+    //         <div className="profileInfoContainer">
+    //           <h6 className="mb-0">First name</h6>
+    //           <div>{myProfile.firstName}</div>
+    //           <h6 className="mb-0 mt-1">Last name</h6>
+    //           <div>{myProfile.lastName}</div>
+    //           <h6 className="mb-0 mt-1"> Email address</h6>
+    //           <div>{myProfile.email}</div>
+    //           <Button
+    //             type="button"
+    //             onClick={(e) => {
+    //               setEditButtonClicked(true);
+    //               navigate("/me/profile/edit");
+    //             }}
+    //             className="mt-3"
+    //           >
+    //             Edit profile
+    //           </Button>
+    //         </div>
+    //       )}
+    //     </Col>
+    //   </Row>
+    // </Container>
   );
 };
 

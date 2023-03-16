@@ -79,14 +79,14 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
-        <Route
+        {/* <Route
           path="/friends"
           element={
             <ProtectedRoute>
               <FriendsPage />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path="/friends/:friendId"
           element={

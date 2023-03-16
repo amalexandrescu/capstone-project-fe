@@ -4,6 +4,7 @@ import {
   EDIT_INFO,
   EDIT_PHOTO,
   ADD_NEW_RECENT_MOVIE,
+  EDIT_COVER,
 } from "../actions";
 
 export interface MyProfileInterface {
@@ -12,6 +13,7 @@ export interface MyProfileInterface {
   lastName: string;
   email: string;
   avatar?: string | File | null;
+  cover: string | File;
 }
 
 interface UserState {
@@ -29,6 +31,7 @@ const initialState: UserState = {
     lastName: "",
     email: "",
     avatar: "",
+    cover: "",
   },
   successfullyLoggedIn: false,
   editProfileInfoSuccessfully: false,
@@ -79,6 +82,11 @@ const userReducer = (state = initialState, action: reduxAction) => {
       return {
         ...state,
         myProfile: { ...state.myProfile, avatar: action.payload },
+      };
+    case EDIT_COVER:
+      return {
+        ...state,
+        myProfile: { ...state.myProfile, cover: action.payload },
       };
     case ADD_NEW_RECENT_MOVIE:
       return {

@@ -84,6 +84,7 @@ const Register = () => {
                   placeholder="Type your first name here"
                   required
                   value={userInfo.firstName}
+                  className="loginInput"
                   onChange={(e) =>
                     onChangeHandler(
                       e as ChangeEvent<HTMLInputElement>,
@@ -102,6 +103,7 @@ const Register = () => {
                   placeholder="Type your last name here"
                   required
                   value={userInfo.lastName}
+                  className="loginInput"
                   onChange={(e) =>
                     onChangeHandler(
                       e as ChangeEvent<HTMLInputElement>,
@@ -119,6 +121,7 @@ const Register = () => {
                   type="email"
                   placeholder="Enter email"
                   value={userInfo.email}
+                  className="loginInput"
                   onChange={(e) =>
                     onChangeHandler(e as ChangeEvent<HTMLInputElement>, "email")
                   }
@@ -137,6 +140,7 @@ const Register = () => {
                   type="password"
                   placeholder="Password"
                   value={userInfo.password}
+                  className="loginInput"
                   onChange={(e) =>
                     onChangeHandler(
                       e as ChangeEvent<HTMLInputElement>,
