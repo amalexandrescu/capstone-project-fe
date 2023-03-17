@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { successfullyLoggedInAction } from "../../redux/actions";
 import { useAppDispatch } from "../../redux/store";
+import * as Icon from "react-bootstrap-icons";
 
 interface RegisterUserInfoInterface {
   firstName: string;
@@ -66,78 +67,99 @@ const Register = () => {
 
   return (
     <Container fluid className="loginContainer">
-      <Row className="justify-content-center">
-        <div className="formContainer bg-success">
+      <Row className="customRow justify-content-center align-items-center">
+        <div className="formContainer">
+          <div className="d-flex justify-content-center">
+            <div className="loginUserIconContainer mb-3">
+              <Icon.Person className="logInUserIcon" />
+            </div>
+          </div>
           <Form onSubmit={handleSubmit}>
-            <Form.Group>
-              <Form.Label>First name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Type your first name here"
-                required
-                value={userInfo.firstName}
-                onChange={(e) =>
-                  onChangeHandler(
-                    e as ChangeEvent<HTMLInputElement>,
-                    "firstName"
-                  )
-                }
-              />
+            <Form.Group className="mb-3">
+              {/* <Form.Label>First name</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.PersonFill className="loginIcons" />
+                <Form.Control
+                  type="text"
+                  placeholder="Type your first name here"
+                  required
+                  value={userInfo.firstName}
+                  className="loginInput"
+                  onChange={(e) =>
+                    onChangeHandler(
+                      e as ChangeEvent<HTMLInputElement>,
+                      "firstName"
+                    )
+                  }
+                />
+              </div>
             </Form.Group>
             <Form.Group>
-              <Form.Label>Last name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Type your last name here"
-                required
-                value={userInfo.lastName}
-                onChange={(e) =>
-                  onChangeHandler(
-                    e as ChangeEvent<HTMLInputElement>,
-                    "lastName"
-                  )
-                }
-              />
+              {/* <Form.Label>Last name</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.PersonFill className="loginIcons" />
+                <Form.Control
+                  type="text"
+                  placeholder="Type your last name here"
+                  required
+                  value={userInfo.lastName}
+                  className="loginInput"
+                  onChange={(e) =>
+                    onChangeHandler(
+                      e as ChangeEvent<HTMLInputElement>,
+                      "lastName"
+                    )
+                  }
+                />
+              </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={userInfo.email}
-                onChange={(e) =>
-                  onChangeHandler(e as ChangeEvent<HTMLInputElement>, "email")
-                }
-              />
+              {/* <Form.Label>Email address</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.PersonFill className="loginIcons" />
+                <Form.Control
+                  type="email"
+                  placeholder="Enter email"
+                  value={userInfo.email}
+                  className="loginInput"
+                  onChange={(e) =>
+                    onChangeHandler(e as ChangeEvent<HTMLInputElement>, "email")
+                  }
+                />
+              </div>
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={userInfo.password}
-                onChange={(e) =>
-                  onChangeHandler(
-                    e as ChangeEvent<HTMLInputElement>,
-                    "password"
-                  )
-                }
-              />
+              {/* <Form.Label>Password</Form.Label> */}
+              <div className="loginInputContainer">
+                <Icon.LockFill className="loginIcons" />
+                <Form.Control
+                  type="password"
+                  placeholder="Password"
+                  value={userInfo.password}
+                  className="loginInput"
+                  onChange={(e) =>
+                    onChangeHandler(
+                      e as ChangeEvent<HTMLInputElement>,
+                      "password"
+                    )
+                  }
+                />
+              </div>
             </Form.Group>
-            <Button
-              variant="primary"
+            <button
+              className="logInButton"
               type="submit"
               onClick={() => {
                 registerFunction(userInfo);
                 setRegisteredSuccessfully(true);
               }}
             >
-              Register
-            </Button>
+              REGISTER
+            </button>
           </Form>
           <div className="pt-3">
             If you already have an account click <Link to="/login">here </Link>

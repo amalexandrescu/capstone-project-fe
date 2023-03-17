@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 
 export interface IMovieCard {
   id: string;
+  key: number;
 }
 
 const SingleMovieCard = ({ id }: IMovieCard) => {

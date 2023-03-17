@@ -16,6 +16,8 @@ import {
 import EditProfileInput from "./components/profile/EditProfileInput";
 import Movies from "./components/movies/Movies";
 import SingleMoviePage from "./components/movies/SingleMoviePage";
+import FriendsPage from "./components/friends/FriendsPage";
+import SingleUserPage from "./components/friends/SingleUserPage";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
@@ -77,6 +79,22 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+        {/* <Route
+          path="/friends"
+          element={
+            <ProtectedRoute>
+              <FriendsPage />
+            </ProtectedRoute>
+          }
+        /> */}
+        <Route
+          path="/friends/:friendId"
+          element={
+            <ProtectedRoute>
+              <SingleUserPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

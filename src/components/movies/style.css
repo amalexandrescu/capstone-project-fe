@@ -1,12 +1,3 @@
-:root {
-  --secondary-bg-color: #202c33;
-  --main-bg-color: #111b21;
-  --hover-bg-color: #202c33;
-  --icon-color: #aebac1;
-  --sent-message-color: #005c4b;
-  --secondary-icon-color: #53bdeb;
-}
-
 .input-search-bg,
 .input-search-bg:focus {
   background-color: var(--hover-bg-color) !important;
@@ -57,31 +48,125 @@
 }
 
 .moviePosterContainer {
-  height: 500px;
-  width: 90%;
-  background-color: #202c33;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  /* height: 500px; */
+  width: 100% !important;
   position: relative;
   border-radius: 5px;
   overflow: hidden;
 }
 
 .moviePosterContainer img {
-  height: 100%;
-  width: 50%;
+  height: 400px;
+  width: 270px;
   background-repeat: no-repeat;
   background-size: cover;
+  border-radius: 20px;
+  align-items: start;
+}
+
+.movieDetailsContainer {
+  /* height: 400px; */
+  margin-inline: 40px;
+  color: var(--main-bg-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.myRating,
+.ratingButtonContainer {
+  font-weight: bold;
+  color: var(--main-bg-color);
+}
+
+.ratedStar,
+.unratedStar {
+  color: var(--rated-star-icon);
+}
+
+.rateMovie {
+  font-weight: bold;
+  color: var(--main-bg-color);
+}
+
+.rateButton {
+  padding: 10px 5px;
+  cursor: pointer;
 }
 
 .watchedMovieButton {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
+  cursor: pointer;
+  background-color: var(--main-bg-color);
+  color: var(--navbar-active-color);
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.addToWatchedMovieButton {
+  cursor: pointer;
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-weight: bold;
 }
 
 .movieInfoContainer {
   width: 90%;
-  background-color: #53bdeb;
   border-radius: 5px;
+}
+
+/* .moreInfoContainer {
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  border-radius: 20px;
+} */
+
+.moreInfoLeftSide {
+  width: 50% !important;
+  border-right: 2px solid var(--input-bg-color);
+}
+
+.moreInfoRightSide {
+  width: 50% !important;
+  padding-left: 15px !important;
+}
+
+.imdbLink,
+a:hover {
+  color: var(--navbar-active-color);
+  text-decoration: none !important;
+}
+
+.goBackButtonContainer {
+  width: 90%;
+}
+.goBackButtonContainer span {
+  height: 40px !important;
+  width: 40px !important;
+  background-color: var(--main-bg-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.goBackIcon {
+  margin: 5px 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--input-bg-color);
+}
+
+.goBackButtonContainer span:hover .goBackIcon {
+  font-size: 25px;
+  color: var(--navbar-active-color);
+  transition: font-size 2s, color 2s;
 }
 
 .ratingStar {
@@ -96,11 +181,6 @@
   transition: color 200ms;
 }
 
-.radioButtons {
-  display: none;
-  /* visibility: hidden; */
-}
-
 button {
   background-color: transparent;
   border: none;
@@ -112,14 +192,6 @@ button {
 }
 .off {
   color: #ccc;
-}
-
-.ratingSystemContainer {
-  position: absolute;
-  /* background-color: red; */
-  color: white;
-  bottom: 75px;
-  right: 20px;
 }
 
 .movie-cover {
@@ -143,4 +215,231 @@ button {
 .badgeContainer {
   position: absolute;
   top: -2px;
+}
+
+.ratingModalButton,
+.yesNoButton {
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  width: 100px;
+  padding: 10px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.rateModal,
+.watchMovieModal {
+  text-align: center;
+}
+
+.modal-footer {
+  display: block !important;
+}
+
+.modal-title {
+  width: 80%;
+  display: inline;
+}
+
+.modal-header button {
+  margin-top: -7px !important;
+}
+
+/* 0px --- 575px */
+@media screen and (max-width: 730px) {
+  /* .mainContainer {
+    background-color: pink !important;
+  } */
+
+  .moviePoster {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .movieDetailsContainer {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+  }
+
+  .moviePosterContainer {
+    min-height: 500px !important;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .titleAndRatingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100% !important;
+    margin-inline: 20px;
+  }
+
+  .plotText {
+    text-align: justify !important;
+  }
+
+  .actorsNames {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .moreInfoContainer {
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding-inline: 20px !important;
+  }
+
+  .titleAndRatingContainer h5 {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+/* 575px --- 991px */
+@media screen and (min-width: 730px) and (max-width: 991px) {
+  /* .mainContainer {
+    background-color: red !important;
+  } */
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .titleAndRatingContainer {
+    display: flex;
+    flex-direction: column;
+    /* align-items: start; */
+    justify-content: space-between;
+    width: 100% !important;
+  }
+
+  .titleAndRatingContainer h5 {
+    display: flex;
+    justify-content: start;
+  }
+
+  .movieDetailsContainer {
+    margin-left: 40px !important;
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    order: 6;
+  }
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column-reverse;
+    min-height: 500px !important;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
+
+  .watchedMovieButton {
+    width: 270px !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  /* .mainContainer {
+    background-color: orange !important;
+  } */
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .moviePoster {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex;
+    justify-content: start;
+  }
+
+  .plotText {
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 5 !important; /* number of lines to show */
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  .movieDetailsContainer {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-left: 0px;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
+}
+
+@media screen and (min-width: 1181px) {
+  /* .mainContainer {
+    background-color: blue !important;
+  } */
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
 }

@@ -9,6 +9,7 @@ export const GET_MY_PROFILE = "GET_MY_PROFILE";
 export const EDIT_INFO = "EDIT_INFO";
 export const EDIT_PHOTO = "EDIT_PHOTO";
 export const ADD_NEW_RECENT_MOVIE = "ADD_NEW_RECENT_MOVIE";
+export const EDIT_COVER = "EDIT_COVER";
 
 export const successfullyLoggedInAction = () => {
   return {
@@ -55,6 +56,13 @@ export const editProfileInfoAction = (newData: MyProfileInterface) => {
 export const editProfilePhotoAction = (newData: MyProfileInterface) => {
   return {
     type: EDIT_PHOTO,
+    payload: newData,
+  };
+};
+
+export const editProfileCoverAction = (newData: MyProfileInterface) => {
+  return {
+    type: EDIT_COVER,
     payload: newData,
   };
 };
