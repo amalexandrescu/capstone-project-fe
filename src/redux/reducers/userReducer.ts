@@ -5,6 +5,7 @@ import {
   EDIT_PHOTO,
   ADD_NEW_RECENT_MOVIE,
   EDIT_COVER,
+  IRecentlyAdded,
 } from "../actions";
 
 export interface MyProfileInterface {
@@ -21,7 +22,7 @@ interface UserState {
   successfullyLoggedIn: boolean;
   editProfileInfoSuccessfully: boolean;
   editProfilePhotoSuccessfully: boolean;
-  recentlySearchedMovies: string[];
+  recentlySearchedMovies: Array<{ imdbId: string; poster: string }>;
 }
 
 const initialState: UserState = {
@@ -45,10 +46,10 @@ interface reduxAction {
 }
 
 const userReducer = (state = initialState, action: reduxAction) => {
-  const newFunct = (payload: any) => {
+  const newFunct = (payload: IRecentlyAdded) => {
     let includes = false;
     for (let i = 0; i < state.recentlySearchedMovies.length; i++) {
-      if (state.recentlySearchedMovies[i] === payload) {
+      if (state.recentlySearchedMovies[i].imdbId === payload.imdbId) {
         includes = true;
         break;
       }

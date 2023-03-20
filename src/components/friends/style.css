@@ -99,6 +99,7 @@ input[type="password"].editProfileInput:focus {
 .profileImageContainer {
   height: 60px;
   background: linear-gradient(var(--input-bg-color), var(--main-bg-color));
+  border-radius: 5px;
   /* background-color: var(--main-bg-color); */
   display: flex;
   position: absolute;
@@ -118,6 +119,13 @@ input[type="password"].editProfileInput:focus {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+
+.avatarImage {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .profileName {
@@ -172,7 +180,7 @@ input[type="password"].editProfileInput:focus {
   justify-content: space-between;
 }
 
-.topRatedMovies .card {
+.fiveCardsContainer .card {
   height: 300px;
   width: 200px;
   background-color: var(--main-bg-color);
@@ -180,21 +188,21 @@ input[type="password"].editProfileInput:focus {
   color: var(--input-bg-color);
 }
 
-.topRatedMovies .card-img-top {
+.fiveCardsContainer .card-img-top {
   height: 230px;
   width: 200px;
   padding: 15px;
   border-radius: 9%;
 }
 
-.topRatedMovies .card-body,
-.topRatedMovies .card-body h5 {
+.fiveCardsContainer .card-body,
+.fiveCardsContainer .card-body h5 {
   display: flex;
   width: 100%;
   justify-content: center;
 }
 
-.topRatedMovies .card-title {
+.fiveCardsContainer .card-title {
   width: 170px;
   overflow: hidden;
   text-overflow: ellipsis !important;
@@ -206,7 +214,8 @@ input[type="password"].editProfileInput:focus {
   text-align: center;
 }
 
-.fiveCardsContainer {
+.fiveCardsContainer,
+.fiveRecentCardsContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -227,6 +236,7 @@ input[type="password"].editProfileInput:focus {
 .usualContainer {
   height: 100vh;
   overflow-y: scroll;
+  background-color: var(--input-bg-color);
 }
 
 .cursorPointer {

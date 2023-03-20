@@ -1,6 +1,5 @@
 // import { Middleware } from "redux";
 // import { LogInUserInfoInterface } from "../../components/login/LogIn";
-import { UserInfo } from "os";
 import { MyProfileInterface } from "../reducers/userReducer";
 import { AppDispatch, RootState } from "../store";
 export const LOG_IN = "LOG_IN";
@@ -10,6 +9,11 @@ export const EDIT_INFO = "EDIT_INFO";
 export const EDIT_PHOTO = "EDIT_PHOTO";
 export const ADD_NEW_RECENT_MOVIE = "ADD_NEW_RECENT_MOVIE";
 export const EDIT_COVER = "EDIT_COVER";
+
+export interface IRecentlyAdded {
+  imdbId: string;
+  poster: string;
+}
 
 export const successfullyLoggedInAction = () => {
   return {
@@ -67,10 +71,11 @@ export const editProfileCoverAction = (newData: MyProfileInterface) => {
   };
 };
 
-export const addNewRecentMovieAction = (imdbId: string) => {
+// { imdbId: string, poster: string }
+export const addNewRecentMovieAction = ({ imdbId, poster }: IRecentlyAdded) => {
   return {
     type: ADD_NEW_RECENT_MOVIE,
-    payload: imdbId,
+    payload: { imdbId: imdbId, poster: poster },
   };
 };
 

@@ -41,13 +41,6 @@ const SingleMovieCarousel = ({ currentMovieObj }: IThisComponent) => {
           navigate(`/movies/${currentMovieObj.watchedMovie.imdbID}`);
         }}
       />
-      <h6 className="badgeContainer">
-        <Badge className="bg-secondary">
-          {currentMovieObj.userRating > 0
-            ? currentMovieObj.userRating
-            : "Not rated yet"}
-        </Badge>
-      </h6>
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
   Button,
   ListGroup,
   Carousel,
+  Card,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -15,10 +16,12 @@ import { useNavigate } from "react-router";
 import { IMovie } from "./SingleMoviePage";
 import CarouselManager from "./CarouselManager";
 import { ISingleMovieCarousel } from "./SingleMovieCarousel";
-import { addNewRecentMovieAction } from "../../redux/actions";
+import { addNewRecentMovieAction, IRecentlyAdded } from "../../redux/actions";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { useSelector } from "react-redux";
 import SingleMovieCard from "./SingleMovieCard";
+import { groupBy } from "lodash";
+import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
 const Movies = () => {
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
@@ -26,7 +29,20 @@ const Movies = () => {
   const [createdOk, setCreatedOk] = useState<boolean>(false);
   const [userMovies, setUserMovies] = useState<ISingleMovieCarousel[]>([]);
   const [moviesCounter, setMoviesCounter] = useState<number>(0);
-  const [recents, setRecents] = useState<string[]>([]);
+  const [recents, setRecents] = useState<Array<IRecentlyAdded>>([]);
+
+  const [adventureMovies, setAdventureMovies] = useState<
+    ISingleMovieCarousel[]
+  >([]);
+
+  const [allM, setAllM] = useState<ISingleMovieCarousel[]>([]);
+
+  const [moviesByGenre, setMoviesByGenre] = useState<any>([]);
+  const [movieGenres, setMovieGenres] = useState<any>([]);
+
+  const [clikedGenreManager, setClikedGenreManager] = useState<
+    Array<{ genre: string; clicked: boolean }>
+  >([]);
 
   const [fetchedMovies, setFetechedMovies] = useState<
     Array<{
@@ -134,6 +150,52 @@ const Movies = () => {
     }
   };
 
+  const testFunction = (allMovies: any) => {
+    if (allMovies.length !== 0) {
+      setClikedGenreManager([]);
+      // let currentGenre = "";
+      //Andrei + Alexis
+
+      const result = groupBy(allMovies, (movie) =>
+        movie.watchedMovie.genre.split(",")[0].trim()
+      );
+      console.log("VOILA: ", Object.values(result));
+      console.log("VOILA: ", Object.keys(result));
+      setMoviesByGenre(Object.values(result));
+      setMovieGenres(Object.keys(result));
+
+      const genres = Object.keys(result);
+      const filteredArray = genres.filter(
+        (g) => g !== "Action" && g !== "Adventure" && g !== "Comedy"
+      );
+
+      filteredArray.map((g) =>
+        setClikedGenreManager((clickedGenreManager) => [
+          ...clickedGenreManager,
+          { genre: g, clicked: false },
+        ])
+      );
+
+      //end Andrei si alexis
+    }
+  };
+
+  const fetchAllM = async () => {
+    try {
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const options: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const result = await fetch(`${beUrl}/users/me/movies`, options);
+      const allUserMovies = await result.json();
+      setAllM(allUserMovies);
+    } catch (error) {
+      console.log("error trying to get the movies of the user");
+      console.log(error);
+    }
+  };
+
   const fetchAllUserMovies = async () => {
     try {
       const beUrl = process.env.REACT_APP_BE_URL;
@@ -143,6 +205,8 @@ const Movies = () => {
       };
       const result = await fetch(`${beUrl}/users/me/movies`, options);
       const allUserMovies = await result.json();
+
+      // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@ - allM", allM);
       console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@", allUserMovies);
       if (allUserMovies.length > 6) {
         setUserMovies([...allUserMovies, ...allUserMovies]);
@@ -186,88 +250,223 @@ const Movies = () => {
 
   console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", recents);
 
+  useEffect(() => {
+    fetchAllM();
+  }, []);
+
+  useEffect(() => {
+    if (allM.length !== 0) {
+      testFunction(allM);
+    }
+  }, [allM]);
+
   return (
-    <Container fluid className="bg-info">
-      <Row>
-        <Col>
-          <div className="pt-2 flex-grow-1  mr-2 pb-0">
-            <InputGroup>
-              <InputGroup.Text id="basic-addon1">
-                <Icon.Search />
-              </InputGroup.Text>
-              <Form.Control
-                className="input-search-bg"
-                placeholder="Search movies by title"
-                value={currentSearchedMovie}
-                onChange={async (e) => {
-                  onChangeHandler(e as ChangeEvent<HTMLInputElement>);
-                  if (currentSearchedMovie.length >= 4) {
-                    const movies = await fetchMovieByQuery(
-                      currentSearchedMovie
+    <Container fluid className="mainContainer">
+      <Container className="contentContainer d-flex flex-column">
+        <Row className="justify-content-center mt-3">
+          <Col className="d-flex justify-content-start">
+            <div className="goBackButtonContainer">
+              <span onClick={() => navigate(-1)}>
+                <Icon.ArrowLeft className="goBackIcon" />
+              </span>
+            </div>
+          </Col>
+        </Row>
+        <Row className="justify-content-center">
+          <Col className="d-flex justify-content-center align-items-center flex-column">
+            <div className="pt-3 mr-2 pb-0 testing">
+              <InputGroup>
+                <InputGroup.Text id="search-icon-container">
+                  <Icon.Search />
+                </InputGroup.Text>
+                <Form.Control
+                  className="homeInputSearch"
+                  placeholder="Search movies by title"
+                  value={currentSearchedMovie}
+                  onChange={async (e) => {
+                    onChangeHandler(e as ChangeEvent<HTMLInputElement>);
+                    if (currentSearchedMovie.length >= 4) {
+                      const movies = await fetchMovieByQuery(
+                        currentSearchedMovie
+                      );
+                      console.log(
+                        "################################################",
+                        fetchedMovies
+                      );
+                      setFetechedMovies(movies);
+                    }
+                  }}
+                />
+              </InputGroup>
+              <ListGroup as="ul" className="movieSearchlistGroup">
+                {fetchedMovies &&
+                  fetchedMovies.map((m) => {
+                    return (
+                      <ListGroup.Item
+                        as="li"
+                        key={m.imdbID}
+                        className="movieSearchLi d-flex align-items-center"
+                        onClick={async () => {
+                          await fetchMovieImdbId(m.imdbID);
+                          dispatch(
+                            addNewRecentMovieAction({
+                              imdbId: m.imdbID,
+                              poster: m.Poster,
+                            })
+                          );
+                          setCurrentSearchedMovie("");
+                          navigate(`/movies/${m.imdbID}`);
+                        }}
+                      >
+                        <span className="moviePosterSearchLi mr-2">
+                          {m.Poster !== "N/A" ? (
+                            <img src={m.Poster} alt="movie poster" />
+                          ) : (
+                            <Icon.ImageFill className="moviePosterSearchIcon" />
+                          )}
+                        </span>
+                        <span>{m.Title}</span>
+                      </ListGroup.Item>
                     );
-                    setFetechedMovies(movies);
-                  }
-                }}
-              />
-            </InputGroup>
-          </div>
-          <ListGroup as="ul" className="movieSearchlistGroup">
-            {fetchedMovies &&
-              fetchedMovies.map((m) => {
-                return (
-                  <ListGroup.Item
-                    as="li"
-                    key={m.imdbID}
-                    className="movieSearchLi d-flex align-items-center"
-                    onClick={async () => {
-                      await fetchMovieImdbId(m.imdbID);
-                      dispatch(addNewRecentMovieAction(m.imdbID));
-                      setCurrentSearchedMovie("");
-                      navigate(`/movies/${m.imdbID}`);
-                    }}
-                  >
-                    <span className="moviePosterSearchLi mr-2">
-                      {m.Poster !== "N/A" ? (
-                        <img src={m.Poster} alt="movie poster" />
-                      ) : (
-                        <Icon.ImageFill className="moviePosterSearchIcon" />
-                      )}
-                    </span>
-                    <span>{m.Title}</span>
-                  </ListGroup.Item>
-                );
-              })}
-          </ListGroup>
-        </Col>
-      </Row>
-      <Row>
-        <Col>Recently searched movies</Col>
-      </Row>
-      <Row>
-        {recents &&
-          recents.map((movieImdbId: string, index) => {
-            return (
-              <Col className="d-flex">
-                <SingleMovieCard key={index} id={movieImdbId} />
-              </Col>
-            );
-          })}
-      </Row>
-      <Row>
-        <Col>Your movies</Col>
-      </Row>
-      <Row>
-        <Col>
-          {userMovies.length !== 0 ? (
-            <CarouselManager
-              moviesCounter={moviesCounter}
-              userMovies={userMovies}
-            />
-          ) : (
-            <></>
-          )}
-        </Col>
-      </Row>
+                  })}
+              </ListGroup>
+            </div>
+          </Col>
+        </Row>
+        <div className="position-on-top">
+          <Row className="justify-content-center mt-3">
+            <Col className="d-flex justify-content-center">
+              <div className="recentlySearchedMoviesContainer topRatedMovies">
+                <h5>Recently searched movies</h5>
+                <div className="fiveRecentCardsContainer">
+                  {recents &&
+                    recents.map((recent: IRecentlyAdded, index) => {
+                      return (
+                        <SingleMovieCard
+                          key={index}
+                          id={recent.imdbId}
+                          poster={recent.poster}
+                        />
+                      );
+                    })}
+                </div>
+              </div>
+            </Col>
+          </Row>
+          {movieGenres.length !== 0 &&
+            movieGenres.map((genre: string, index: number) => (
+              <Row
+                className={
+                  genre !== "Action" &&
+                  genre !== "Adventure" &&
+                  genre !== "Comedy"
+                    ? "justify-content-center mt-3 flexOrder"
+                    : "justify-content-center mt-3"
+                }
+              >
+                <Col className="d-flex justify-content-center">
+                  <div className="recentlySearchedMoviesContainer topRatedMovies">
+                    <h5
+                      className="cursorPointer"
+                      onClick={() => {
+                        if (
+                          genre !== "Action" &&
+                          genre !== "Comedy" &&
+                          genre !== "Adventure"
+                        ) {
+                          const index = clikedGenreManager.findIndex(
+                            (entry) => entry.genre === genre
+                          );
+                          clikedGenreManager[index] = {
+                            genre: genre,
+                            clicked: !clikedGenreManager[index].clicked,
+                          };
+
+                          setClikedGenreManager([...clikedGenreManager]);
+                        }
+                      }}
+                    >
+                      {genre}
+                    </h5>
+                    <div className="fiveRecentCardsContainer">
+                      {genre !== "Action" &&
+                        genre !== "Comedy" &&
+                        genre !== "Adventure" &&
+                        moviesByGenre.length !== 0 &&
+                        moviesByGenre[index].map((m: any) => {
+                          const searched = clikedGenreManager.find(
+                            (entry) => entry.genre === genre
+                          );
+
+                          if (searched) {
+                            return (
+                              <div>
+                                <Card
+                                  className={
+                                    searched.clicked === true
+                                      ? "mb-3 mr-2"
+                                      : "d-none"
+                                  }
+                                  onClick={() => {
+                                    navigate(
+                                      `/movies/${m.watchedMovie.imdbID}`
+                                    );
+                                  }}
+                                >
+                                  <Card.Img
+                                    variant="top"
+                                    src={m.watchedMovie.poster}
+                                  />
+                                </Card>
+                              </div>
+                            );
+                          }
+                        })}
+                      {(genre === "Action" ||
+                        genre === "Comedy" ||
+                        genre === "Adventure") &&
+                        moviesByGenre.length !== 0 &&
+                        moviesByGenre[index].map((m: any) => (
+                          <div>
+                            <Card
+                              className="mb-3 mr-2"
+                              onClick={() => {
+                                navigate(`/movies/${m.watchedMovie.imdbID}`);
+                              }}
+                            >
+                              <Card.Img
+                                variant="top"
+                                src={m.watchedMovie.poster}
+                              />
+                            </Card>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            ))}
+
+          {/* <div className="recentlySearchedMoviesContainer topRatedMovies"></div> */}
+          <Row className="justify-content-center mt-3">
+            <Col className="d-flex justify-content-center">
+              <h5>Your movies</h5>
+            </Col>
+          </Row>
+          <Row className="justify-content-center mt-3">
+            <Col className="d-flex justify-content-center">
+              {userMovies.length !== 0 ? (
+                <CarouselManager
+                  moviesCounter={moviesCounter}
+                  userMovies={userMovies}
+                />
+              ) : (
+                <></>
+              )}
+            </Col>
+          </Row>
+        </div>
+      </Container>
     </Container>
   );
 };

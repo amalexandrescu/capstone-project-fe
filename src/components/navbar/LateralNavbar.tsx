@@ -5,6 +5,8 @@ import { useAppSelector } from "../../redux/store";
 
 const LateralNavbar = () => {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
+
+  const myProfileId = useAppSelector((state) => state.user.myProfile._id);
   return (
     <div
       id="navbar-container"
@@ -44,7 +46,7 @@ const LateralNavbar = () => {
         </div>
       </NavLink>
       <NavLink
-        to="/me/profile"
+        to={`/me/profile/${myProfileId}`}
         className={({ isActive }) =>
           isActive ? "activeClassName" : "linkDesign"
         }
@@ -54,7 +56,7 @@ const LateralNavbar = () => {
           <span>My Profile</span>
         </div>
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to="/friends"
         className={({ isActive }) =>
           isActive ? "activeClassName" : "linkDesign"
@@ -64,7 +66,7 @@ const LateralNavbar = () => {
           <Icon.PeopleFill className="navbar-icons mr-2" />
           <span>Friends</span>
         </div>
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to="/logOut"
         className={({ isActive }) =>
