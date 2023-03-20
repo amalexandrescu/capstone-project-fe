@@ -13,7 +13,6 @@ import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import {
   getMyProfileAction,
-  // logInAction,
   successfullyLoggedInAction,
 } from "../../redux/actions";
 import { AppDispatch, useAppDispatch, useAppSelector } from "../../redux/store";

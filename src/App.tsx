@@ -63,14 +63,24 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {
+          /* <Route
           path="/me/profile"
           element={
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
           }
-        />
+        /> */
+          <Route
+            path="/me/profile/:friendId"
+            element={
+              <ProtectedRoute>
+                <SingleUserPage />
+              </ProtectedRoute>
+            }
+          />
+        }
         <Route
           path="/me/profile/edit"
           element={
