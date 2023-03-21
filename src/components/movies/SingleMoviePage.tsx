@@ -273,8 +273,12 @@ const SingleMoviePage = () => {
                     <h5 className="">Actors</h5>
                     <div className="actorsNames mb-3">
                       {separatedActors.length !== 0 &&
-                        separatedActors.map((actor) => {
-                          return <span className="mr-4">{actor}</span>;
+                        separatedActors.map((actor, index: number) => {
+                          return (
+                            <span className="mr-4" key={index}>
+                              {actor}
+                            </span>
+                          );
                         })}
                     </div>
                   </div>
@@ -359,8 +363,17 @@ const SingleMoviePage = () => {
                       {separatedGenre.length !== 0 &&
                         separatedGenre.map((genre, index) => {
                           if (separatedGenre.length - 1 !== index)
-                            return <span className="mr-2">{genre} |</span>;
-                          else return <span className="mr-2">{genre}</span>;
+                            return (
+                              <span className="mr-2" key={index}>
+                                {genre} |
+                              </span>
+                            );
+                          else
+                            return (
+                              <span className="mr-2" key={index}>
+                                {genre}
+                              </span>
+                            );
                         })}
                     </span>
                   </div>

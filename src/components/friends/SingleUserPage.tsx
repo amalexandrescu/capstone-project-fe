@@ -295,7 +295,7 @@ const SingleUserPage = () => {
                 <h5>{currenUserInfo.firstName}'s top 5 rated movies</h5>
                 {sortedMovies.length !== 0 &&
                   sortedMovies.slice(0, 5).map((m, index) => (
-                    <div className="fiveMoviesList">
+                    <div className="fiveMoviesList" key={index}>
                       <span
                         className="cursorPointer"
                         onClick={() => {
@@ -326,9 +326,10 @@ const SingleUserPage = () => {
                         currenUserInfo.movies.length - 5,
                         currenUserInfo.movies.length
                       )
-                      .map((m: any) => {
+                      .map((m: any, index: number) => {
                         return (
                           <Card
+                            key={index}
                             className="mb-3 mr-2"
                             onClick={() => {
                               navigate(`/movies/${m.watchedMovie.imdbID}`);

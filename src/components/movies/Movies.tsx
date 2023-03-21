@@ -356,6 +356,7 @@ const Movies = () => {
           {movieGenres.length !== 0 &&
             movieGenres.map((genre: string, index: number) => (
               <Row
+                key={index}
                 className={
                   genre !== "Action" &&
                   genre !== "Adventure" &&
@@ -393,14 +394,14 @@ const Movies = () => {
                         genre !== "Comedy" &&
                         genre !== "Adventure" &&
                         moviesByGenre.length !== 0 &&
-                        moviesByGenre[index].map((m: any) => {
+                        moviesByGenre[index].map((m: any, inedx: number) => {
                           const searched = clikedGenreManager.find(
                             (entry) => entry.genre === genre
                           );
 
                           if (searched) {
                             return (
-                              <div>
+                              <div key={index}>
                                 <Card
                                   className={
                                     searched.clicked === true
@@ -426,8 +427,8 @@ const Movies = () => {
                         genre === "Comedy" ||
                         genre === "Adventure") &&
                         moviesByGenre.length !== 0 &&
-                        moviesByGenre[index].map((m: any) => (
-                          <div>
+                        moviesByGenre[index].map((m: any, index: number) => (
+                          <div key={index}>
                             <Card
                               className="mb-3 mr-2"
                               onClick={() => {

@@ -18,6 +18,7 @@ import Movies from "./components/movies/Movies";
 import SingleMoviePage from "./components/movies/SingleMoviePage";
 import FriendsPage from "./components/friends/FriendsPage";
 import SingleUserPage from "./components/friends/SingleUserPage";
+import DiscoverPage from "./components/discover/DiscoverPage";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
@@ -89,6 +90,14 @@ function App() {
             </ProtectedRoute>
           }
         ></Route>
+        <Route
+          path="/discover"
+          element={
+            <ProtectedRoute>
+              <DiscoverPage />
+            </ProtectedRoute>
+          }
+        />
         {/* <Route
           path="/friends"
           element={
