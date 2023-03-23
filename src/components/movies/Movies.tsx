@@ -76,7 +76,7 @@ const Movies = () => {
   const fetchMovieImdbId = async (id: string) => {
     try {
       const response: any = await fetch(
-        `http://www.omdbapi.com/?i=${id}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
+        `https://www.omdbapi.com/?i=${id}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
         { credentials: "include" }
       );
       const {
@@ -122,7 +122,7 @@ const Movies = () => {
   const fetchMovieByQuery = async (query: string) => {
     try {
       const response = await fetch(
-        `http://www.omdbapi.com/?s=${query}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
+        `https://www.omdbapi.com/?s=${query}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
         { credentials: "include" }
       );
       const movie = await response.json();

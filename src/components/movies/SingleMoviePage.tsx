@@ -97,7 +97,7 @@ const SingleMoviePage = () => {
   const fetchMovieImdbId = async (id: string) => {
     try {
       const response: any = await fetch(
-        `http://www.omdbapi.com/?i=${id}&type=movie&plot=full&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
+        `https://www.omdbapi.com/?i=${id}&type=movie&plot=full&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
         { credentials: "include" }
       );
       const {
