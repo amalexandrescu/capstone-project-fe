@@ -2,7 +2,6 @@ import { Row, Carousel } from "react-bootstrap";
 import SingleMovieCarousel, {
   ISingleMovieCarousel,
 } from "./SingleMovieCarousel";
-import { IMovie } from "./SingleMoviePage";
 
 interface ICarousel {
   moviesCounter: number;

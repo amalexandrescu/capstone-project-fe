@@ -1,7 +1,6 @@
 import "./App.css";
 import LateralNavbar from "./components/navbar/LateralNavbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProfilePage from "./components/profile/ProfilePage";
 import LogIn from "./components/login/LogIn";
 import Register from "./components/login/Register";
 import Home from "./components/home/Home";
@@ -9,21 +8,23 @@ import ProtectedRoute from "./components/helpers/ProtectedRoute";
 import { useAppDispatch, useAppSelector } from "./redux/store";
 import { useEffect } from "react";
 import {
-  editProfileInfoAction,
-  editProfilePhotoAction,
+  // editProfileInfoAction,
+  // editProfilePhotoAction,
   getMyProfileAction,
 } from "./redux/actions";
-import EditProfileInput from "./components/profile/EditProfileInput";
+
 import Movies from "./components/movies/Movies";
 import SingleMoviePage from "./components/movies/SingleMoviePage";
-import FriendsPage from "./components/friends/FriendsPage";
+// import FriendsPage from "./components/friends/FriendsPage";
 import SingleUserPage from "./components/friends/SingleUserPage";
+import DiscoverPage from "./components/discover/DiscoverPage";
+import LogOut from "./components/logout/LogOut";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
-  const profileInfoEditSuccessfully = useAppSelector(
-    (state) => state.user.editProfileInfoSuccessfully
-  );
+  // const profileInfoEditSuccessfully = useAppSelector(
+  //   (state) => state.user.editProfileInfoSuccessfully
+  // );
 
   const dispatch = useAppDispatch();
 
@@ -63,45 +64,39 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {
-          /* <Route
-          path="/me/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        /> */
-          <Route
-            path="/me/profile/:friendId"
-            element={
-              <ProtectedRoute>
-                <SingleUserPage />
-              </ProtectedRoute>
-            }
-          />
-        }
+
         <Route
-          path="/me/profile/edit"
+          path="/me/profile/:friendId"
           element={
             <ProtectedRoute>
-              <EditProfileInput />
+              <SingleUserPage />
             </ProtectedRoute>
           }
-        ></Route>
-        {/* <Route
-          path="/friends"
+        />
+
+        <Route
+          path="/discover"
           element={
             <ProtectedRoute>
-              <FriendsPage />
+              <DiscoverPage />
             </ProtectedRoute>
           }
-        /> */}
+        />
+
         <Route
           path="/friends/:friendId"
           element={
             <ProtectedRoute>
               <SingleUserPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/logout"
+          element={
+            <ProtectedRoute>
+              <LogOut />
             </ProtectedRoute>
           }
         />

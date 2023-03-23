@@ -10,7 +10,6 @@
   height: 300px;
   width: 300px;
   background-color: white;
-  /* border-radius: 50%; */
   border-radius: 5px;
   overflow: hidden;
   background-repeat: no-repeat;
@@ -37,11 +36,9 @@
 .profileInfoContainer {
   height: 300px;
   width: 300px;
-  background-color: white;
 }
 
 .test {
-  color: red;
   position: absolute;
   left: 40px;
   top: 30px;

@@ -7,7 +7,6 @@ const ProtectedRoute: any = ({
   children: React.ReactElement[];
 }) => {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
-  console.log("......", isLoggedIn);
 
   if (!isLoggedIn) {
     return <Navigate to="/login" />;

@@ -1,5 +1,5 @@
 import { Modal, Button, Form } from "react-bootstrap";
-import { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import {
   editProfileInfoAction,
   editProfilePhotoAction,
@@ -137,16 +137,17 @@ const EditProfileModal = ({ show, close }: IEditProfileModal) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button
+        <button
+          style={{ width: "200px" }}
+          className="ratingModalButton"
           type="submit"
-          variant="primary"
           onClick={async () => {
             await editProfileInfo();
             close();
           }}
         >
           Save Changes
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

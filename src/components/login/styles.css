@@ -1,15 +1,12 @@
 :root {
-  /* --secondary-bg-color: #202c33; */
   --main-bg-color: #0b132b;
   --dark-writing-color: #1c2541;
   --input-bg-color: #e8f0fe;
   --navbar-active-color: #d8315b;
-  --navbar-hover-color: #3e7cb1;
-  /* --hover-bg-color: #202c33; */
+  /* --navbar-hover-color: #3e7cb1; */
   --icon-color: #aebac1;
   --rated-star-icon: #ffb627;
-  /* --sent-message-color: #005c4b; */
-  /* --secondary-icon-color: #53bdeb; */
+  --hovered-button: #162e75;
 }
 
 * {

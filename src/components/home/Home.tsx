@@ -8,6 +8,7 @@ import {
   InputGroup,
   Form,
   ListGroup,
+  Spinner,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import "./style.css";
@@ -16,7 +17,7 @@ import { parseISO, format } from "date-fns";
 import { sortBy } from "lodash";
 
 const Home = () => {
-  const [data, setData] = useState<Array<any>>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const myProfileId = useAppSelector((state) => state.user.myProfile._id);
   const [allMyFriends, setAllMyFriends] = useState<Array<any>>([]);
   const [allMyFriendsWatchedMovies, setAllMyFriendsWatchedMovies] = useState<
@@ -63,7 +64,6 @@ const Home = () => {
       const result = await fetch(`${beUrl}/users/me/friends`, options);
       const friends = await result.json();
       return friends;
-      // setAllMyFriends(allUserFriends);
     } catch (error) {
       console.log("error trying to get the movies of the user");
       console.log(error);
@@ -83,7 +83,6 @@ const Home = () => {
       );
       const friend = await result.json();
       return friend;
-      // setAllMyFriends(allUserFriends);
     } catch (error) {
       console.log("error trying to get the movies of the user");
       console.log(error);
@@ -100,8 +99,8 @@ const Home = () => {
 
       const response = await fetch(`${beUrl}/users`, options);
       const users = await response.json();
-      // return users;
       setAllUsers(users);
+      setIsLoading(true);
     } catch (error) {
       console.log("error during fetch users on home page");
       console.log(error);
@@ -109,6 +108,7 @@ const Home = () => {
   };
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(getMyProfileAction());
   }, []);
@@ -136,7 +136,6 @@ const Home = () => {
       const myFriends: any = await fetchAllMyFriends();
       if (myFriends !== allMyFriends) {
         setAllMyFriends(myFriends);
-        console.log("UUUUUU", allMyFriends);
       }
     };
 
@@ -145,7 +144,6 @@ const Home = () => {
 
   useEffect(() => {
     const updateFriendsMovies = async () => {
-      // setAllMyFriendsWatchedMovies([]);
       if (allMyFriends.length !== 0) {
         // promise.ALL()
         const allFriendsFullInfo = await Promise.all(
@@ -174,43 +172,12 @@ const Home = () => {
             (item) => -new Date(item.watchedMovie.createdAt).getTime()
           )
         );
+        setIsLoading(false);
       }
     };
 
     updateFriendsMovies();
   }, [allMyFriends]);
-
-  // useEffect(() => {
-  //   if (allMyFriendsWatchedMovies.length !== 0) {
-  //     const goodDates = allMyFriendsWatchedMovies.map(
-  //       (i) => (i.watchedMovie.createdAt = parseISO(i.watchedMovie.createdAt))
-  //     );
-  //     console.log("FILTERED: ", goodDates);
-  //   }
-
-  //   // const sorted = allMyFriendsWatchedMovies.sort(
-  //   //   (a, b) => a.watchedMovie.createdAt - b.watchedMovie.createdAt
-  //   // );
-  // }, [allMyFriends]);
-
-  // useEffect(() => {
-  //   const result = allMyFriendsWatchedMovies
-  //     .filter((friendWithMovies) => friendWithMovies.movies.length !== 0)
-  //     .map((friendWithMovies) => {
-  //       return friendWithMovies.movies.map((m: any) => ({
-  //         ...m,
-  //         friendInfo: {
-  //           friendId: friendWithMovies._id,
-  //           name: friendWithMovies.firstName + " " + friendWithMovies.lastName,
-  //         },
-  //       }));
-  //     })
-  //     .flat();
-
-  //   setData(result);
-
-  //   console.log("RESULT", result);
-  // }, [allMyFriendsWatchedMovies]);
 
   return (
     <Container fluid className="mainContainer">
@@ -242,7 +209,6 @@ const Home = () => {
                         className="movieSearchLi d-flex align-items-center"
                         onClick={() => {
                           setCurrentSearch("");
-                          // navigate(`/friends/${user._id}`);
                           if (user._id.toString() === myProfileId.toString()) {
                             navigate(`/me/profile/${myProfileId}`);
                           } else {
@@ -267,51 +233,30 @@ const Home = () => {
             </div>
           </Col>
         </Row>
-        {/* <Row> */}
-        {/* <Col> */}
-        {/* <ListGroup as="ul" className="movieSearchlistGroup">
-              {usersThatMatchSearch &&
-                usersThatMatchSearch.length !== 0 &&
-                usersThatMatchSearch.map((user, index) => {
-                  return (
-                    <ListGroup.Item
-                      as="li"
-                      key={index}
-                      className="movieSearchLi d-flex align-items-center"
-                      onClick={() => {
-                        setCurrentSearch("");
-                        // navigate(`/friends/${user._id}`);
-                        if (user._id.toString() === myProfileId.toString()) {
-                          navigate(`/me/profile/${myProfileId}`);
-                        } else {
-                          navigate(`/friends/${user._id}`);
-                        }
-                      }}
-                    >
-                      <span className="moviePosterSearchLi mr-2">
-                        {user.avatar !== "" ? (
-                          <img src={user.avatar} alt="movie poster" />
-                        ) : (
-                          <Icon.ImageFill className="moviePosterSearchIcon" />
-                        )}
-                      </span>
-                      <span>
-                        {user.firstName} {user.lastName}
-                      </span>
-                    </ListGroup.Item>
-                  );
-                })}
-            </ListGroup> */}
-        {/* </Col> */}
-        {/* </Row> */}
+
         <div className="position-on-top">
-          <Row className="justify-content-center mt-3">
+          <Row className={isLoading ? "justify-content-center" : "d-none"}>
+            <Col className="d-flex justify-content-center align-items-center flex-column">
+              <Spinner animation="border" />
+            </Col>
+          </Row>
+          <Row className={isLoading ? "d-none" : "justify-content-center mt-3"}>
             <Col className="d-flex justify-content-center flex-column">
               {allMyFriendsWatchedMovies.length !== 0 &&
-                allMyFriendsWatchedMovies.map((i: any) => (
-                  <div className="singlePostNewsFeedContainer mb-3 py-3 px-3">
+                allMyFriendsWatchedMovies.map((i: any, index: number) => (
+                  <div
+                    className="singlePostNewsFeedContainer mb-3 py-3 px-3"
+                    key={index}
+                  >
                     <div className="newsFeedNameAndDateContainer d-flex justify-content-between">
-                      <h6 className="mb-0">{i.friendInfo.name}</h6>
+                      <h6
+                        className="mb-0 cursorPointer"
+                        onClick={() => {
+                          navigate(`/friends/${i.friendInfo.friendId}`);
+                        }}
+                      >
+                        {i.friendInfo.name}
+                      </h6>
                       <div>
                         {format(
                           parseISO(i.watchedMovie.createdAt),
@@ -322,11 +267,21 @@ const Home = () => {
                     </div>
                     <p className="mt-2 mb-2">Added a new movie to his list</p>
                     <div className="d-flex">
-                      <div className="newsFeedMovieContainer mr-2">
+                      <div
+                        className="newsFeedMovieContainer mr-2 cursorPointer"
+                        onClick={() => {
+                          navigate(`/movies/${i.watchedMovie.imdbID}`);
+                        }}
+                      >
                         <img src={i.watchedMovie.poster} alt="movie photo" />
                       </div>
                       <div className="newsFeedMovieInfo ">
-                        <span className="newsFeedMovieTitle">
+                        <span
+                          className="newsFeedMovieTitle cursorPointer"
+                          onClick={() => {
+                            navigate(`/movies/${i.watchedMovie.imdbID}`);
+                          }}
+                        >
                           {i.watchedMovie.title}
                         </span>
                         <span className="d-flex align-items-center">
