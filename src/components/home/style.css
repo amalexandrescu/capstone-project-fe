@@ -1,0 +1,113 @@
+.mainContainer {
+  background-color: var(--input-bg-color) !important;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.homeInputSearch,
+.homeInputSearch:focus {
+  background-color: var(--main-bg-color) !important;
+  border-left: 0 !important;
+  outline: none !important;
+  border-color: var(--icon-color) !important;
+  box-shadow: none !important;
+  color: var(--input-bg-color) !important;
+}
+
+::placeholder {
+  color: var(--input-bg-color) !important;
+}
+
+#search-icon-container {
+  background-color: var(--main-bg-color);
+  border-color: var(--icon-color);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 0;
+  color: var(--navbar-active-color);
+}
+
+.newsFeedMovieContainer {
+  height: 100px;
+  width: 70px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.newsFeedMovieContainer img {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.newsFeedStarIcon {
+  color: var(--rated-star-icon);
+}
+
+.newsFeedYourRatingStarIcon {
+  color: var(--navbar-active-color);
+}
+
+.singlePostNewsFeedContainer {
+  background-color: var(--main-bg-color);
+  border-radius: 5px;
+  color: var(--input-bg-color);
+}
+
+@media screen and (max-width: 730px) {
+  /* .mainContainer {
+    background-color: pink !important;
+  } */
+
+  .newsFeedNameAndDateContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+  }
+
+  .newsFeedMovieContainer {
+    height: 80px;
+  }
+
+  .newsFeedMovieTitle {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important; /* number of lines to show */
+    line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  .newsFeedMovieInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+h6.cursorPointer:hover,
+.newsFeedMovieTitle:hover {
+  color: var(--navbar-active-color);
+  transition: color 0.2s ease-in-out;
+}
+
+@media screen and (min-width: 730px) and (max-width: 991px) {
+  /* .mainContainer {
+    background-color: red !important;
+  } */
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  /* .mainContainer {
+    background-color: orange !important;
+  } */
+}
+
+@media screen and (min-width: 1181px) {
+  /* .mainContainer {
+    background-color: blue !important;
+  } */
+}

@@ -1,0 +1,45 @@
+#navbar-container {
+  height: 100vh;
+  min-width: 200px;
+  background-color: var(--main-bg-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  color: var(--input-bg-color) !important;
+}
+
+#navbar-container a {
+  color: var(--input-bg-color);
+  font-size: 15px;
+}
+
+#navbar-container a:hover,
+a:hover .navbar-icons {
+  color: var(--hovered-button);
+  transition: color 0.4s ease-in-out;
+  font-size: 20px;
+  transition: font-size 1.5s;
+}
+
+.navbar-icons {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  color: var(--input-bg-color);
+  font-size: 15px !important;
+}
+
+.activeClassName {
+  text-decoration: none !important;
+  color: var(--navbar-active-color) !important;
+}
+
+a.activeClassName .navbar-icons {
+  color: var(--navbar-active-color);
+}
+
+.linkDesign {
+  text-decoration: none !important;
+}

@@ -1,0 +1,558 @@
+.position-on-top {
+  position: relative;
+  top: -150px;
+}
+
+.fiveRecentCardsContainer .card {
+  /* height: 300px; */
+  width: 200px;
+  background-color: var(--main-bg-color);
+  border: none;
+  color: var(--input-bg-color);
+}
+
+.fiveRecentCardsContainer .card-img-top {
+  height: 230px;
+  width: 200px;
+  padding: 15px;
+  border-radius: 9%;
+}
+
+.fiveRecentCardsContainer .card-body,
+.fiveRecentCardsContainer .card-body h5 {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgb(35 173 255);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.movieSearchLi:hover {
+  background-color: var(--navbar-active-color);
+}
+
+.movieSearchLi {
+  cursor: pointer;
+}
+
+.moviePosterSearchLi {
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  overflow: hidden;
+  /* background-color: white; */
+  display: inline-block;
+  flex-wrap: wrap;
+}
+
+.moviePosterSearchLi img,
+.moviePosterSearchIcon {
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: white;
+}
+
+.movieSearchlistGroup {
+  height: 200px;
+  width: 400px;
+  overflow-y: scroll;
+}
+
+.movieSearchlistGroup li,
+.movieSearchlistGroup span::nth-child(2) {
+  width: 100% !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/*singleMoviePage */
+.moviePosterContainer {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 100% !important;
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/*singleMoviePage */
+.moviePosterContainer img {
+  height: 400px;
+  width: 270px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 20px;
+  align-items: start;
+}
+
+/*singleMoviePage */
+.movieDetailsContainer {
+  margin-inline: 40px;
+  color: var(--main-bg-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/*singleMoviePage */
+.myRating,
+.ratingButtonContainer {
+  font-weight: bold;
+  color: var(--main-bg-color);
+}
+
+/*singleMoviePage */
+.ratedStar,
+.unratedStar {
+  color: var(--rated-star-icon);
+}
+
+/*singleMoviePage */
+.rateMovie {
+  font-weight: bold;
+  color: var(--main-bg-color);
+}
+
+/*singleMoviePage */
+.rateButton {
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+/*singleMoviePage */
+.watchedMovieButton {
+  cursor: pointer;
+  background-color: var(--main-bg-color);
+  color: var(--navbar-active-color);
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+/*singleMoviePage */
+.addToWatchedMovieButton {
+  cursor: pointer;
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  padding: 10px 15px;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+/*singleMoviePage */
+.movieInfoContainer {
+  width: 90%;
+  border-radius: 5px;
+}
+
+/*singleMoviePage */
+.moreInfoLeftSide {
+  width: 50% !important;
+  border-right: 2px solid var(--input-bg-color);
+}
+
+/*singleMoviePage */
+.moreInfoRightSide {
+  width: 50% !important;
+  padding-left: 15px !important;
+}
+
+/*singleMoviePage */
+.imdbLink,
+a:hover {
+  color: var(--navbar-active-color);
+  text-decoration: none !important;
+}
+
+/*singleMoviePage */
+.goBackButtonContainer {
+  width: 90%;
+}
+
+/*singleMoviePage */
+.goBackButtonContainer span {
+  height: 40px !important;
+  width: 40px !important;
+  background-color: var(--main-bg-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/*singleMoviePage */
+.goBackIcon {
+  margin: 5px 5px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--input-bg-color);
+}
+
+/*singleMoviePage */
+.goBackButtonContainer span:hover .goBackIcon {
+  font-size: 25px;
+  color: var(--navbar-active-color);
+  transition: font-size 2s, color 2s;
+}
+
+/*singleMoviePage */
+/* .ratingStar {
+  color: orange;
+  cursor: pointer;
+  transition: color 200ms;
+} */
+
+/* .rated {
+  color: grey;
+  cursor: pointer;
+  transition: color 200ms;
+} */
+
+button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/*singleMoviePage */
+.on {
+  color: var(--navbar-active-color);
+}
+/*singleMoviePage */
+.off {
+  color: var(--main-bg-color);
+}
+
+/*singleMoviePage */
+.movie-cover {
+  width: 99%;
+  transition: 0.3s;
+  opacity: 0.7;
+  height: 135px;
+  object-fit: cover;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/*carousel manager */
+.movie-row {
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+
+/* singlemovie carousel */
+.movieCarouselItem {
+  position: relative;
+}
+
+.badgeContainer {
+  position: absolute;
+  top: -2px;
+}
+
+.ratingModalButton,
+.yesNoButton {
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  width: 100px;
+  padding: 10px 15px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.rateModal,
+.watchMovieModal {
+  text-align: center;
+}
+
+.modal-footer {
+  display: block !important;
+}
+
+.modal-title {
+  width: 80%;
+  display: inline;
+}
+
+.modal-header button {
+  margin-top: -7px !important;
+}
+
+.flexOrder {
+  order: 6;
+}
+
+.carouselContainerProfilePage {
+  background-color: var(--main-bg-color);
+  border-radius: 5px;
+  color: var(--input-bg-color);
+  padding-top: 10px;
+  padding-bottom: 0;
+  padding-inline: 30px;
+}
+.moviespageExpandNotice {
+  font-size: 15px;
+  display: flex;
+  height: 100%;
+  align-items: end;
+}
+
+.moviespageExpandNoticeGenre {
+  margin-bottom: -1px !important;
+}
+
+/* 0px --- 575px */
+@media screen and (max-width: 730px) {
+  /* .mainContainer {
+    background-color: pink !important;
+  } */
+
+  .moviePoster {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .movieDetailsContainer {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+  }
+
+  .moviePosterContainer {
+    min-height: 500px !important;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .titleAndRatingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100% !important;
+    margin-inline: 20px;
+  }
+
+  .plotText {
+    text-align: justify !important;
+  }
+
+  .actorsNames {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+  }
+
+  .moreInfoContainer {
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding-inline: 20px !important;
+  }
+
+  .titleAndRatingContainer h5 {
+    display: flex;
+    justify-content: center;
+  }
+
+  .movieCarouselItem {
+    margin-bottom: 20px;
+    width: 80% !important;
+    margin-inline: auto;
+  }
+}
+.testing,
+.testing ul {
+  width: 300px !important;
+  z-index: 1;
+}
+
+/* 575px --- 991px */
+@media screen and (min-width: 730px) and (max-width: 991px) {
+  /* .mainContainer {
+    background-color: red !important;
+  } */
+
+  .testing,
+  .testing ul {
+    width: 300px !important;
+  }
+
+  .movieCarouselItem,
+  .movieCarouselItem img {
+    margin-bottom: 20px;
+    height: 200px;
+    width: 100%;
+  }
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .titleAndRatingContainer {
+    display: flex;
+    flex-direction: column;
+    /* align-items: start; */
+    justify-content: space-between;
+    width: 100% !important;
+  }
+
+  .titleAndRatingContainer h5 {
+    display: flex;
+    justify-content: start;
+  }
+
+  .movieDetailsContainer {
+    margin-left: 40px !important;
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 0px;
+    order: 6;
+  }
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+    flex-direction: column-reverse;
+    min-height: 500px !important;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
+
+  .watchedMovieButton {
+    width: 270px !important;
+    margin-inline: auto !important;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  /* .mainContainer {
+    background-color: orange !important;
+  } */
+
+  .testing,
+  .testing ul {
+    width: 500px !important;
+  }
+
+  .movieCarouselItem,
+  .movieCarouselItem img {
+    margin-bottom: 20px;
+    margin-inline: auto;
+  }
+
+  .movie-cover {
+    height: 175px !important;
+  }
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .moviePoster {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex;
+    justify-content: start;
+  }
+
+  .plotText {
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 5 !important; /* number of lines to show */
+    line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+
+  .movieDetailsContainer {
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    margin-left: 0px;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
+}
+
+@media screen and (min-width: 1181px) {
+  /* .mainContainer {
+    background-color: blue !important;
+  } */
+
+  .testing,
+  .testing ul {
+    width: 500px !important;
+  }
+
+  .movie-cover {
+    height: 275px !important;
+  }
+
+  .moviePosterContainer {
+    display: flex;
+    margin-top: 20px;
+  }
+
+  .contentContainer {
+    width: 90% !important;
+  }
+
+  .moreInfoContainer {
+    width: 100% !important;
+    background-color: var(--main-bg-color);
+    color: var(--input-bg-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-inline: 20px !important;
+  }
+}

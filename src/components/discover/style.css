@@ -1,0 +1,32 @@
+.filtersContainer label {
+  width: 100%;
+  text-align: center;
+}
+
+h5 {
+  text-align: center;
+}
+
+@media screen and (max-width: 730px) {
+  /* .mainContainer {
+    background-color: pink !important;
+  } */
+}
+
+@media screen and (min-width: 730px) and (max-width: 991px) {
+  /* .mainContainer {
+    background-color: red !important;
+  } */
+}
+
+@media screen and (min-width: 992px) and (max-width: 1180px) {
+  /* .mainContainer {
+    background-color: orange !important;
+  } */
+}
+
+@media screen and (min-width: 1181px) {
+  /* .mainContainer {
+    background-color: blue !important;
+  } */
+}
