@@ -171,7 +171,7 @@ const Movies = () => {
   const fetchMovieByQuery = async (query: string) => {
     try {
       const response = await fetch(
-        `https://www.omdbapi.com/?s=${query}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
+        `http://www.omdbapi.com/?s=${query}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
         { credentials: "include" }
       );
       const movie = await response.json();
