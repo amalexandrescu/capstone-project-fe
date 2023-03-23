@@ -56,17 +56,6 @@ const LateralNavbar = () => {
           <span>My Profile</span>
         </div>
       </NavLink>
-      {/* <NavLink
-        to="/friends"
-        className={({ isActive }) =>
-          isActive ? "activeClassName" : "linkDesign"
-        }
-      >
-        <div className="d-flex align-items-center mb-3">
-          <Icon.PeopleFill className="navbar-icons mr-2" />
-          <span>Friends</span>
-        </div>
-      </NavLink> */}
       <NavLink
         to="/logOut"
         className={({ isActive }) =>

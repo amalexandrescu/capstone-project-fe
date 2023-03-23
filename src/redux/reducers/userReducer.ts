@@ -6,6 +6,9 @@ import {
   ADD_NEW_RECENT_MOVIE,
   EDIT_COVER,
   IRecentlyAdded,
+  SUCCESSFULLY_LOGGED_OUT,
+  EDIT_REDUX_STATE_ON_LOGOUT,
+  ADD_NEW_MOVIE_TO_DICOVER_PAGE,
 } from "../actions";
 
 export interface MyProfileInterface {
@@ -23,6 +26,8 @@ interface UserState {
   editProfileInfoSuccessfully: boolean;
   editProfilePhotoSuccessfully: boolean;
   recentlySearchedMovies: Array<{ imdbId: string; poster: string }>;
+  successfullyLoggedOut: boolean;
+  discoverPageFiltersResult: Array<any>;
 }
 
 const initialState: UserState = {
@@ -38,6 +43,8 @@ const initialState: UserState = {
   editProfileInfoSuccessfully: false,
   editProfilePhotoSuccessfully: false,
   recentlySearchedMovies: [],
+  successfullyLoggedOut: false,
+  discoverPageFiltersResult: [],
 };
 
 interface reduxAction {
@@ -92,10 +99,37 @@ const userReducer = (state = initialState, action: reduxAction) => {
     case ADD_NEW_RECENT_MOVIE:
       return {
         ...state,
+
         recentlySearchedMovies: [
           ...state.recentlySearchedMovies,
           action.payload,
         ],
+      };
+    case SUCCESSFULLY_LOGGED_OUT:
+      return {
+        ...state,
+        successfullyLoggedOut: action.payload,
+      };
+    case EDIT_REDUX_STATE_ON_LOGOUT:
+      return {
+        ...state,
+        myProfile: {
+          _id: "",
+          firstName: "",
+          lastName: "",
+          email: "",
+          avatar: "",
+          cover: "",
+        },
+
+        editProfileInfoSuccessfully: false,
+        editProfilePhotoSuccessfully: false,
+        discoverPageFiltersResult: [],
+      };
+    case ADD_NEW_MOVIE_TO_DICOVER_PAGE:
+      return {
+        ...state,
+        discoverPageFiltersResult: [action.payload].flat(),
       };
     default:
       return state;

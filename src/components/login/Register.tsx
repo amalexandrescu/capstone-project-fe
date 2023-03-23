@@ -1,9 +1,12 @@
 import "./styles.css";
-import { Container, Row, Form, Button } from "react-bootstrap";
+import { Container, Row, Form } from "react-bootstrap";
 import { FormEvent, useState, ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
-import { successfullyLoggedInAction } from "../../redux/actions";
+import {
+  successfullyLoggedInAction,
+  successfullyLoggedOutAction,
+} from "../../redux/actions";
 import { useAppDispatch } from "../../redux/store";
 import * as Icon from "react-bootstrap-icons";
 
@@ -28,7 +31,6 @@ const Register = () => {
   const registerFunction = async (
     userCredentials: RegisterUserInfoInterface
   ) => {
-    console.log("trying to register");
     const beUrl = process.env.REACT_APP_BE_URL;
 
     const options: RequestInit = {
@@ -43,7 +45,8 @@ const Register = () => {
       let response = await fetch(`${beUrl}/users/register`, options);
       if (response.ok) {
         let fetchedData = await response.json();
-        dispatch(successfullyLoggedInAction());
+        dispatch(successfullyLoggedInAction(true));
+        dispatch(successfullyLoggedOutAction(false));
         setRegisteredSuccessfully(true);
         navigate("/");
       } else {
@@ -76,7 +79,6 @@ const Register = () => {
           </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              {/* <Form.Label>First name</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.PersonFill className="loginIcons" />
                 <Form.Control
@@ -95,7 +97,6 @@ const Register = () => {
               </div>
             </Form.Group>
             <Form.Group>
-              {/* <Form.Label>Last name</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.PersonFill className="loginIcons" />
                 <Form.Control
@@ -114,7 +115,6 @@ const Register = () => {
               </div>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              {/* <Form.Label>Email address</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.PersonFill className="loginIcons" />
                 <Form.Control
@@ -133,7 +133,6 @@ const Register = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              {/* <Form.Label>Password</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.LockFill className="loginIcons" />
                 <Form.Control

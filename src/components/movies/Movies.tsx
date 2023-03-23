@@ -5,10 +5,9 @@ import {
   Col,
   Form,
   InputGroup,
-  Button,
   ListGroup,
-  Carousel,
   Card,
+  Spinner,
 } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -18,28 +17,20 @@ import CarouselManager from "./CarouselManager";
 import { ISingleMovieCarousel } from "./SingleMovieCarousel";
 import { addNewRecentMovieAction, IRecentlyAdded } from "../../redux/actions";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { useSelector } from "react-redux";
 import SingleMovieCard from "./SingleMovieCard";
 import { groupBy } from "lodash";
-import { UNSAFE_convertRoutesToDataRoutes } from "@remix-run/router";
 
 const Movies = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
   const [movie, setMovie] = useState<IMovie | null>(null);
   const [createdOk, setCreatedOk] = useState<boolean>(false);
   const [userMovies, setUserMovies] = useState<ISingleMovieCarousel[]>([]);
   const [moviesCounter, setMoviesCounter] = useState<number>(0);
   const [recents, setRecents] = useState<Array<IRecentlyAdded>>([]);
-
-  const [adventureMovies, setAdventureMovies] = useState<
-    ISingleMovieCarousel[]
-  >([]);
-
   const [allM, setAllM] = useState<ISingleMovieCarousel[]>([]);
-
   const [moviesByGenre, setMoviesByGenre] = useState<any>([]);
   const [movieGenres, setMovieGenres] = useState<any>([]);
-
   const [clikedGenreManager, setClikedGenreManager] = useState<
     Array<{ genre: string; clicked: boolean }>
   >([]);
@@ -53,14 +44,13 @@ const Movies = () => {
       Year: string;
     }>
   >([]);
+  const recentlySearchedMovies = useAppSelector(
+    (state) => state.user.recentlySearchedMovies
+  );
 
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-
-  const recentlySearchedMovies = useAppSelector(
-    (state) => state.user.recentlySearchedMovies
-  );
 
   const addNewMovieToDb = async (movieInfo: IMovie) => {
     try {
@@ -76,9 +66,7 @@ const Movies = () => {
 
       const response = await fetch(`${beUrl}/movies`, optionsPOST);
       const data = await response.json();
-      console.log("movie added to my db: ", data);
       setCreatedOk(true);
-      // navigate(`/movies/${movieInfo.imdbID}`);
     } catch (error) {
       console.log("error trying to add new movie to db");
       console.log(error);
@@ -124,7 +112,6 @@ const Movies = () => {
         imdbID: imdbID,
         imdbRating: imdbRating,
       });
-      // return movie;
     } catch (error) {
       console.log("error while trying to fetch movie by imdbID from omdp api");
       console.log(error);
@@ -138,14 +125,12 @@ const Movies = () => {
       );
       const movie = await response.json();
 
-      console.log("ul list of movies ", movie);
       if (movie.Search.length < 10) {
         return movie.Search;
       } else {
         return movie.Search.slice(0, 10);
       }
     } catch (error) {
-      console.log("error while trying to fetch movie from omdp api");
       console.log(error);
     }
   };
@@ -153,14 +138,11 @@ const Movies = () => {
   const testFunction = (allMovies: any) => {
     if (allMovies.length !== 0) {
       setClikedGenreManager([]);
-      // let currentGenre = "";
-      //Andrei + Alexis
 
       const result = groupBy(allMovies, (movie) =>
         movie.watchedMovie.genre.split(",")[0].trim()
       );
-      console.log("VOILA: ", Object.values(result));
-      console.log("VOILA: ", Object.keys(result));
+
       setMoviesByGenre(Object.values(result));
       setMovieGenres(Object.keys(result));
 
@@ -175,8 +157,7 @@ const Movies = () => {
           { genre: g, clicked: false },
         ])
       );
-
-      //end Andrei si alexis
+      setIsLoading(false);
     }
   };
 
@@ -190,6 +171,7 @@ const Movies = () => {
       const result = await fetch(`${beUrl}/users/me/movies`, options);
       const allUserMovies = await result.json();
       setAllM(allUserMovies);
+      setIsLoading(true);
     } catch (error) {
       console.log("error trying to get the movies of the user");
       console.log(error);
@@ -205,17 +187,14 @@ const Movies = () => {
       };
       const result = await fetch(`${beUrl}/users/me/movies`, options);
       const allUserMovies = await result.json();
+      setIsLoading(true);
 
-      // console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@ - allM", allM);
-      console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@", allUserMovies);
       if (allUserMovies.length > 6) {
         setUserMovies([...allUserMovies, ...allUserMovies]);
         setMoviesCounter(Math.floor(allUserMovies.length / 6) + 1);
       } else {
         setUserMovies(allUserMovies);
       }
-
-      console.log("user movies: ", allUserMovies);
     } catch (error) {
       console.log("error trying to get the movies of the user");
       console.log(error);
@@ -228,6 +207,7 @@ const Movies = () => {
 
   useEffect(() => {
     fetchAllUserMovies();
+    setIsLoading(true);
   }, []);
 
   useEffect(() => {
@@ -241,17 +221,12 @@ const Movies = () => {
         ),
       ]);
     }
+    setIsLoading(false);
   }, [recentlySearchedMovies]);
-
-  console.log(
-    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-    recentlySearchedMovies
-  );
-
-  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", recents);
 
   useEffect(() => {
     fetchAllM();
+    setIsLoading(true);
   }, []);
 
   useEffect(() => {
@@ -288,10 +263,6 @@ const Movies = () => {
                     if (currentSearchedMovie.length >= 4) {
                       const movies = await fetchMovieByQuery(
                         currentSearchedMovie
-                      );
-                      console.log(
-                        "################################################",
-                        fetchedMovies
                       );
                       setFetechedMovies(movies);
                     }
@@ -334,7 +305,12 @@ const Movies = () => {
           </Col>
         </Row>
         <div className="position-on-top">
-          <Row className="justify-content-center mt-3">
+          <Row className={isLoading ? "justify-content-center" : "d-none"}>
+            <Col className="d-flex justify-content-center align-items-center flex-column">
+              <Spinner animation="border" />
+            </Col>
+          </Row>
+          <Row className={isLoading ? "d-none" : "justify-content-center mt-3"}>
             <Col className="d-flex justify-content-center">
               <div className="recentlySearchedMoviesContainer topRatedMovies">
                 <h5>Recently searched movies</h5>
@@ -343,9 +319,12 @@ const Movies = () => {
                     recents.map((recent: IRecentlyAdded, index) => {
                       return (
                         <SingleMovieCard
-                          key={index}
+                          key={recent.imdbId}
                           id={recent.imdbId}
                           poster={recent.poster}
+                          onClick={() => {
+                            navigate(`/movies/${recent.imdbId}`);
+                          }}
                         />
                       );
                     })}
@@ -387,14 +366,30 @@ const Movies = () => {
                         }
                       }}
                     >
-                      {genre}
+                      {genre !== "Action" &&
+                      genre !== "Adventure" &&
+                      genre !== "Comedy" ? (
+                        <div>
+                          <span className="moviespageExpandNotice">
+                            click&nbsp;
+                          </span>
+                          <span className="moviespageExpandNoticeGenre">
+                            {genre}
+                          </span>
+                          <span className="moviespageExpandNotice">
+                            &nbsp;to expand
+                          </span>
+                        </div>
+                      ) : (
+                        <div>{genre}</div>
+                      )}
                     </h5>
                     <div className="fiveRecentCardsContainer">
                       {genre !== "Action" &&
                         genre !== "Comedy" &&
                         genre !== "Adventure" &&
                         moviesByGenre.length !== 0 &&
-                        moviesByGenre[index].map((m: any, inedx: number) => {
+                        moviesByGenre[index].map((m: any, index: number) => {
                           const searched = clikedGenreManager.find(
                             (entry) => entry.genre === genre
                           );
@@ -447,25 +442,27 @@ const Movies = () => {
                 </Col>
               </Row>
             ))}
-
-          {/* <div className="recentlySearchedMoviesContainer topRatedMovies"></div> */}
-          <Row className="justify-content-center mt-3">
-            <Col className="d-flex justify-content-center">
-              <h5>Your movies</h5>
-            </Col>
-          </Row>
-          <Row className="justify-content-center mt-3">
-            <Col className="d-flex justify-content-center">
-              {userMovies.length !== 0 ? (
-                <CarouselManager
-                  moviesCounter={moviesCounter}
-                  userMovies={userMovies}
-                />
-              ) : (
-                <></>
-              )}
-            </Col>
-          </Row>
+          <div
+            className={isLoading ? "d-none" : "carouselContainerProfilePage"}
+          >
+            <Row className="justify-content-center mt-3">
+              <Col className="d-flex justify-content-center">
+                <h5>Your movies</h5>
+              </Col>
+            </Row>
+            <Row className="justify-content-center mt-3">
+              <Col className="d-flex justify-content-center">
+                {userMovies.length !== 0 ? (
+                  <CarouselManager
+                    moviesCounter={moviesCounter}
+                    userMovies={userMovies}
+                  />
+                ) : (
+                  <></>
+                )}
+              </Col>
+            </Row>
+          </div>
         </div>
       </Container>
     </Container>

@@ -1,6 +1,6 @@
 import "./style.css";
 import { useEffect, useState } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 interface IRatingComponentProps {
   userRating: number;
@@ -35,21 +35,6 @@ const Rating = ({
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
-  useEffect(() => {
-    if (!movieAlreadyAdded) {
-      setRating(-1);
-      setHover(0);
-    }
-  }, [movieAlreadyAdded]);
-
-  useEffect(() => {
-    if (movieAlreadyRated) {
-      setRating(userRating);
-    }
-  }, [userRating]);
-
-  console.log("^^^^^^^^^^alreadyadded^^^^^^^^^^^^^", movieAlreadyAdded);
-
   //id is the mongoId of the watchedMovie
   const rateMovie = async (id: string, rating: number) => {
     try {
@@ -72,6 +57,19 @@ const Rating = ({
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (!movieAlreadyAdded) {
+      setRating(-1);
+      setHover(0);
+    }
+  }, [movieAlreadyAdded]);
+
+  useEffect(() => {
+    if (movieAlreadyRated) {
+      setRating(userRating);
+    }
+  }, [userRating]);
 
   return (
     <Modal className="rateModal" show={show} onHide={close}>

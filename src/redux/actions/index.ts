@@ -1,5 +1,3 @@
-// import { Middleware } from "redux";
-// import { LogInUserInfoInterface } from "../../components/login/LogIn";
 import { MyProfileInterface } from "../reducers/userReducer";
 import { AppDispatch, RootState } from "../store";
 export const LOG_IN = "LOG_IN";
@@ -9,22 +7,25 @@ export const EDIT_INFO = "EDIT_INFO";
 export const EDIT_PHOTO = "EDIT_PHOTO";
 export const ADD_NEW_RECENT_MOVIE = "ADD_NEW_RECENT_MOVIE";
 export const EDIT_COVER = "EDIT_COVER";
+export const SUCCESSFULLY_LOGGED_OUT = "SUCCESSFULLY_LOGGED_OUT";
+export const EDIT_REDUX_STATE_ON_LOGOUT = "EDIT_REDUX_STATE_ON_LOGOUT";
+export const ADD_NEW_MOVIE_TO_DICOVER_PAGE = "ADD_NEW_MOVIE_TO_DICOVER_PAGE";
 
 export interface IRecentlyAdded {
   imdbId: string;
   poster: string;
 }
 
-export const successfullyLoggedInAction = () => {
+export const successfullyLoggedInAction = (value: boolean) => {
   return {
     type: SUCCESSFULLY_LOGGED_IN,
-    payload: true,
+    payload: value,
   };
 };
 
 export const getMyProfileAction = () => {
   return async (dispatch: AppDispatch, getState: any) => {
-    console.log("trying to fetch my profile info");
+    // console.log("trying to fetch my profile info");
     const beUrl = process.env.REACT_APP_BE_URL;
     const options: RequestInit = {
       method: "GET",
@@ -32,11 +33,11 @@ export const getMyProfileAction = () => {
     };
     try {
       const response = await fetch(`${beUrl}/users/me/profile`, options);
-      console.log("response: ", response);
+      // console.log("response: ", response);
       if (response.ok) {
-        console.log("merge");
+        // console.log("merge");
         let myData = await response.json();
-        console.log("my data: ", myData);
+        // console.log("my data: ", myData);
         dispatch({
           type: GET_MY_PROFILE,
           payload: myData,
@@ -79,33 +80,22 @@ export const addNewRecentMovieAction = ({ imdbId, poster }: IRecentlyAdded) => {
   };
 };
 
-// export const logInAction = (userCredentials: LogInUserInfoInterface) => {
-//   return async (dispatch: AppDispatch, getState: any) => {
-//     const currentState = getState();
-//     console.log(currentState);
-//     console.log("trying to log in");
-//     const beUrl = process.env.REACT_APP_BE_URL;
+export const successfullyLoggedOutAction = (value: boolean) => {
+  return {
+    type: SUCCESSFULLY_LOGGED_OUT,
+    payload: value,
+  };
+};
 
-//     const options = {
-//       method: "POST",
-//       body: JSON.stringify(userCredentials),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     };
-//     try {
-//       let response = await fetch(`${beUrl}/users/login`, options);
-//       if (response.ok) {
-//         let fetchedData = await response.json();
-//         dispatch({
-//           type: LOG_IN,
-//           payload: fetchedData,
-//         });
-//       } else {
-//         console.log("error");
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
+export const editReduxStateOnLogoutAction = () => {
+  return {
+    type: EDIT_REDUX_STATE_ON_LOGOUT,
+  };
+};
+
+export const addNewMovieToDiscoverPageAction = (filteredMovies: any) => {
+  return {
+    type: ADD_NEW_MOVIE_TO_DICOVER_PAGE,
+    payload: filteredMovies,
+  };
+};

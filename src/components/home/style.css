@@ -88,6 +88,12 @@
   }
 }
 
+h6.cursorPointer:hover,
+.newsFeedMovieTitle:hover {
+  color: var(--navbar-active-color);
+  transition: color 0.2s ease-in-out;
+}
+
 @media screen and (min-width: 730px) and (max-width: 991px) {
   /* .mainContainer {
     background-color: red !important;

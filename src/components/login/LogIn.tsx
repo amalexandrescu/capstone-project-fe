@@ -1,22 +1,12 @@
 import "./styles.css";
+import { Container, Row, Form } from "react-bootstrap";
+import { FormEvent, useState, ChangeEvent } from "react";
+import { useNavigate } from "react-router";
 import {
-  Container,
-  Row,
-  Col,
-  Form,
-  Button,
-  InputGroup,
-  Alert,
-} from "react-bootstrap";
-import { FormEvent, useState, ChangeEvent, useContext, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router";
-import { useDispatch } from "react-redux";
-import {
-  getMyProfileAction,
   successfullyLoggedInAction,
+  successfullyLoggedOutAction,
 } from "../../redux/actions";
-import { AppDispatch, useAppDispatch, useAppSelector } from "../../redux/store";
-// import { ThunkAction } from "redux-thunk";
+import { useAppDispatch } from "../../redux/store";
 import { Link } from "react-router-dom";
 import * as Icon from "react-bootstrap-icons";
 
@@ -37,7 +27,6 @@ const LogIn = () => {
   const navigate = useNavigate();
 
   const logInFunction = async (userCredentials: LogInUserInfoInterface) => {
-    console.log("trying to log in");
     const beUrl = process.env.REACT_APP_BE_URL;
 
     const options: RequestInit = {
@@ -52,10 +41,10 @@ const LogIn = () => {
       let response = await fetch(`${beUrl}/users/login`, options);
       if (response.ok) {
         let fetchedData = await response.json();
-        dispatch(successfullyLoggedInAction());
+        dispatch(successfullyLoggedInAction(true));
         setLogInSuccessfully(true);
+        dispatch(successfullyLoggedOutAction(false));
         navigate("/");
-        // dispatch(getMyProfileAction());
       } else {
         console.log("error while trying to log in");
       }
@@ -84,7 +73,6 @@ const LogIn = () => {
           </div>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              {/* <Form.Label>Email address</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.PersonFill className="loginIcons" />
                 <Form.Control
@@ -103,7 +91,6 @@ const LogIn = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              {/* <Form.Label>Password</Form.Label> */}
               <div className="loginInputContainer">
                 <Icon.LockFill className="loginIcons" />
                 <Form.Control

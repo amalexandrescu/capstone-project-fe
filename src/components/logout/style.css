@@ -1,0 +1,31 @@
+.logOutContainer {
+  background-color: var(--main-bg-color);
+  color: var(--input-bg-color);
+  padding: 20px 20px;
+  border-radius: 5px;
+}
+
+.logOutButton {
+  background-color: var(--input-bg-color);
+  margin-inline: auto;
+  display: block;
+  padding: 5px 10px;
+  border-radius: 50px;
+  color: var(--main-bg-color);
+  font-weight: bold;
+}
+
+.logOutButton:hover {
+  color: var(--input-bg-color);
+  transition: color 0.4s ease-in-out;
+}
+
+.logOutButton:hover,
+.watchedMovieButton:hover,
+.logInButton:hover,
+.ratingModalButton:hover,
+.followButton:hover,
+.yesNoButton:hover {
+  background-color: var(--hovered-button);
+  transition: background-color 0.4s ease-in-out;
+}

@@ -1,11 +1,16 @@
+import { click } from "@testing-library/user-event/dist/click";
 import { FormEvent, useEffect, useState, ChangeEvent } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import * as Icon from "react-bootstrap-icons";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { addNewMovieToDiscoverPageAction } from "../../redux/actions";
+import { useAppDispatch } from "../../redux/store";
 import SingleMovieCard from "../movies/SingleMovieCard";
 import "./style.css";
 
 const DiscoverPage = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedFirstName, setSelectedFirstName] = useState<string>("");
   const [selectedLastName, setSelectedLastName] = useState<string>("");
   const [selectedUserRating, setSelectedUserRating] = useState<string>("");
@@ -16,6 +21,10 @@ const DiscoverPage = () => {
   const [selectedMovieGenre, setSelectedMovieGenre] = useState<string>("");
   const [moviesToShow, setMoviesToShow] = useState<any>([]);
   const [clickedButton, setClickedButton] = useState<boolean>(false);
+
+  const filtersResult = useSelector(
+    (state: any) => state.user.discoverPageFiltersResult
+  );
 
   const fetchFriendsWithMovies = async () => {
     try {
@@ -28,6 +37,7 @@ const DiscoverPage = () => {
       const response = await fetch(`${beUrl}/users/movies/discover`, options);
       const data = await response.json();
       setFriendsWithMovies(data);
+      // setIsLoading(true);
       return data;
       // return users;
     } catch (error) {
@@ -42,9 +52,7 @@ const DiscoverPage = () => {
     e.preventDefault();
   };
 
-  // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>, fieldToSet) => {
-  //   // setUserInfo((userInfo) => ({ ...userInfo, [fieldToSet]: e.target.value }));
-  // };
+  const dispatch = useAppDispatch();
 
   const onChangeHandlerImdbRating = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectedImdbRating(e.target.value);
@@ -61,12 +69,10 @@ const DiscoverPage = () => {
   const onChangeHandlerFriendName = (e: ChangeEvent<HTMLInputElement>) => {
     const searchedFriendIndex = friendsNames.find((friend: any) => {
       const fullName = `${friend.firstName} ${friend.lastName}`;
-      console.log("full name", fullName);
       if (fullName === e.target.value) {
         return friend;
       }
     });
-    console.log("teeeest", searchedFriendIndex);
     if (searchedFriendIndex) {
       setSelectedFirstName(searchedFriendIndex.firstName);
       setSelectedLastName(searchedFriendIndex.lastName);
@@ -86,15 +92,14 @@ const DiscoverPage = () => {
       const lowerCase = genreArray.map((genre: any) =>
         genre.toLowerCase().trim()
       );
-      console.log("genre array: ", lowerCase);
       if (lowerCase.includes(selectedMovieGenre)) {
         return el;
       }
     });
 
     setMoviesToShow(final);
-    console.log("hellllo", final);
-    console.log("result", result);
+    // setIsLoading(false);
+    dispatch(addNewMovieToDiscoverPageAction(final));
   };
 
   useEffect(() => {
@@ -121,11 +126,25 @@ const DiscoverPage = () => {
     });
 
     setFriendsNames(result);
-
-    // console.log("resuuuult", result);
   }, [friendsWithMovies]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (clickedButton) setIsLoading(true);
+  }, [clickedButton]);
+
+  useEffect(() => {
+    if (filtersResult.length !== 0) {
+      setClickedButton(false);
+      setIsLoading(false);
+    }
+  }, [clickedButton]);
+
+  useEffect(() => {
+    if (clickedButton && filtersResult.length === 0) setIsLoading(false);
+  }, [filtersResult]);
+
   return (
     <Container fluid className="mainContainer">
       <Container className="contentContainer d-flex flex-column">
@@ -234,34 +253,57 @@ const DiscoverPage = () => {
         <Row className="justify-content-center mt-5">
           <Col className="d-flex justify-content-center align-items-center flex-column">
             <div className="recentlySearchedMoviesContainer topRatedMovies">
-              {clickedButton === false ? (
+              {!clickedButton && filtersResult.length === 0 && (
                 <h5>Please select filters first</h5>
-              ) : moviesToShow.length === 0 ? (
-                <h5>No movies found. Please try again with other filters.</h5>
-              ) : (
-                <h5>Results</h5>
               )}
-              <div className="fiveRecentCardsContainer">
-                {moviesToShow.length !== 0 &&
-                  moviesToShow.map((m: any, index: number) => {
+              {!clickedButton && filtersResult.length !== 0 && <h5>Results</h5>}
+              {clickedButton && filtersResult.length === 0 && (
+                <h5>No movies match your filters</h5>
+              )}
+              {clickedButton && filtersResult.length !== 0 && <h5>Results</h5>}
+
+              {isLoading && (
+                <h5>
+                  <Spinner animation="border" />
+                </h5>
+              )}
+
+              {isLoading === false && (
+                <div className="fiveRecentCardsContainer">
+                  {filtersResult.length !== 0 &&
+                    filtersResult.map((m: any, index: number) => {
+                      return (
+                        <SingleMovieCard
+                          key={index}
+                          id={m.movieData.imdbID}
+                          poster={m.movieData.poster}
+                          onClick={() => {
+                            navigate(`/movies/${m.movieData.imdbID}`);
+                          }}
+                        />
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+            {/* <div
+                className={isLoading ? "d-none" : "fiveRecentCardsContainer"}
+              >
+                {filteresResult.length !== 0 &&
+                  filteresResult.map((m: any, index: number) => {
                     return (
                       <SingleMovieCard
                         key={index}
                         id={m.movieData.imdbID}
                         poster={m.movieData.poster}
+                        onClick={() => {
+                          navigate(`/movies/${m.movieData.imdbID}`);
+                        }}
                       />
                     );
-                    // <div className="d-flex">
-                    //   <div className="mb-3 mr-2">
-                    //     <div>{m.movieData.title}</div>
-                    //     <div>
-                    //       <img src={m.movieData.poster} />
-                    //     </div>
-                    //   </div>
-                    // </div>
                   })}
               </div>
-            </div>
+            </div> */}
           </Col>
         </Row>
       </Container>

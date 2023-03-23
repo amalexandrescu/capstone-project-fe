@@ -3,9 +3,9 @@ import { useNavigate } from "react-router";
 
 export interface IMovieCard {
   id: string;
-  key: number;
+  key: number | string;
   poster: string;
-  // className: string;
+  onClick: Function;
 }
 
 const SingleMovieCard = ({ id, poster }: IMovieCard) => {

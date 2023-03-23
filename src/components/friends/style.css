@@ -100,7 +100,6 @@ input[type="password"].editProfileInput:focus {
   height: 60px;
   background: linear-gradient(var(--input-bg-color), var(--main-bg-color));
   border-radius: 5px;
-  /* background-color: var(--main-bg-color); */
   display: flex;
   position: absolute;
   bottom: 0px;
