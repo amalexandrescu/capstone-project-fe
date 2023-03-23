@@ -75,10 +75,12 @@ const Movies = () => {
 
   const fetchMovieImdbId = async (id: string) => {
     try {
-      const response: any = await fetch(
-        `https://www.omdbapi.com/?i=${id}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
-        { credentials: "include" }
-      );
+      const beUrl = process.env.REACT_APP_BE_URL;
+      const options: RequestInit = {
+        method: "GET",
+        credentials: "include",
+      };
+      const response = await fetch(`${beUrl}/omdb/${id}`, options);
       const {
         Actors,
         Genre,
@@ -113,11 +115,58 @@ const Movies = () => {
         imdbID: imdbID,
         imdbRating: imdbRating,
       });
+      // setIsLoading(false);
     } catch (error) {
       console.log("error while trying to fetch movie by imdbID from omdp api");
       console.log(error);
     }
   };
+
+  // const fetchMovieImdbId = async (id: string) => {
+  //   try {
+  //     const response: any = await fetch(
+  //       `https://www.omdbapi.com/?i=${id}&type=movie&apikey=${process.env.REACT_APP_OMDB_API_KEY}`,
+  //       { credentials: "include" }
+  //     );
+  //     const {
+  //       Actors,
+  //       Genre,
+  //       Plot,
+  //       Poster,
+  //       Released,
+  //       Runtime,
+  //       Title,
+  //       imdbID,
+  //       imdbRating,
+  //     } = await response.json();
+  //     const movieToAdd: IMovie = {
+  //       actors: Actors,
+  //       title: Title,
+  //       genre: Genre,
+  //       plot: Plot,
+  //       poster: Poster,
+  //       released: Released,
+  //       runtime: Runtime,
+  //       imdbID: imdbID,
+  //       imdbRating: imdbRating,
+  //     };
+  //     await addNewMovieToDb(movieToAdd);
+  //     setMovie({
+  //       actors: Actors,
+  //       title: Title,
+  //       genre: Genre,
+  //       plot: Plot,
+  //       poster: Poster,
+  //       released: Released,
+  //       runtime: Runtime,
+  //       imdbID: imdbID,
+  //       imdbRating: imdbRating,
+  //     });
+  //   } catch (error) {
+  //     console.log("error while trying to fetch movie by imdbID from omdp api");
+  //     console.log(error);
+  //   }
+  // };
 
   const fetchMovieByQuery = async (query: string) => {
     try {
