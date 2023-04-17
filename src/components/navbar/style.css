@@ -43,3 +43,25 @@ a.activeClassName .navbar-icons {
 .linkDesign {
   text-decoration: none !important;
 }
+
+.navbarProfileImage {
+  height: 100%;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.navbarProfileProfileInfo {
+  width: 100px !important;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 1 !important; /* number of lines to show */
+  line-clamp: 1 !important;
+  -webkit-box-orient: vertical !important;
+}
+
+.navbarProfileImageContainer {
+  height: 30px;
+  width: 100px;
+  margin-left: 10px;
+}

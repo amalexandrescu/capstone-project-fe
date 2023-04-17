@@ -161,6 +161,7 @@ const Home = () => {
                 friendId: friendWithMovies._id,
                 name:
                   friendWithMovies.firstName + " " + friendWithMovies.lastName,
+                avatar: friendWithMovies.avatar,
               },
             }));
           })
@@ -249,14 +250,26 @@ const Home = () => {
                     key={index}
                   >
                     <div className="newsFeedNameAndDateContainer d-flex justify-content-between">
-                      <h6
-                        className="mb-0 cursorPointer"
-                        onClick={() => {
-                          navigate(`/friends/${i.friendInfo.friendId}`);
-                        }}
-                      >
-                        {i.friendInfo.name}
-                      </h6>
+                      <div className="profilePicutureNewsFeed d-flex align-items-center justify-content-between">
+                        <div className="d-flex justify-content-start align-items-center profileImageNewsFeedContainer">
+                          {i.friendInfo.avatar !== "" ? (
+                            <img
+                              src={i.friendInfo.avatar}
+                              className="profileImageNewsFeed"
+                            />
+                          ) : (
+                            <Icon.PersonFill className="profileIconNewsFeed" />
+                          )}
+                        </div>
+                        <h6
+                          className="mb-0 cursorPointer ml-2"
+                          onClick={() => {
+                            navigate(`/friends/${i.friendInfo.friendId}`);
+                          }}
+                        >
+                          {i.friendInfo.name}
+                        </h6>
+                      </div>
                       <div>
                         {format(
                           parseISO(i.watchedMovie.createdAt),

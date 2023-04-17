@@ -5,6 +5,7 @@ import { useAppSelector } from "../../redux/store";
 
 const LateralNavbar = () => {
   const isLoggedIn = useAppSelector((state) => state.user.successfullyLoggedIn);
+  const myProfileDetails = useAppSelector((state) => state.user.myProfile);
 
   const myProfileId = useAppSelector((state) => state.user.myProfile._id);
   return (
@@ -52,9 +53,24 @@ const LateralNavbar = () => {
         }
       >
         <div className="d-flex align-items-center mb-3">
+          {myProfileDetails.avatar !== "" ? (
+            <div className="mr-2 d-flex align-items-center navbarProfileImageContainer">
+              <img
+                src={myProfileDetails.avatar}
+                className="navbarProfileImage"
+              />
+              <span className="navbarProfileProfileInfo ml-2">
+                {`${myProfileDetails.firstName} ${myProfileDetails.lastName}`}
+              </span>
+            </div>
+          ) : (
+            <Icon.PersonCircle className="navbar-icons mr-2" />
+          )}
+        </div>
+        {/* <div className="d-flex align-items-center mb-3">
           <Icon.PersonCircle className="navbar-icons mr-2" />
           <span>My Profile</span>
-        </div>
+        </div> */}
       </NavLink>
       <NavLink
         to="/logOut"

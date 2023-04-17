@@ -65,9 +65,19 @@ const SingleUserPage = () => {
         credentials: "include",
       };
 
-      const response = await fetch(`${beUrl}/users/me/movies`, options);
-      const sortedMovies = await response.json();
-      setSortedMovies(sortedMovies);
+      // const response = await fetch(`${beUrl}/users/me/movies`, options);
+      if (friendId === myProfileId) {
+        const response = await fetch(`${beUrl}/users/me/movies`, options);
+        const sortedMovies = await response.json();
+        setSortedMovies(sortedMovies);
+      } else {
+        const response = await fetch(
+          `${beUrl}/users/movies/${friendId}`,
+          options
+        );
+        const sortedMovies = await response.json();
+        setSortedMovies(sortedMovies);
+      }
     } catch (error) {
       console.log("error trying to fetch user's sorted movies ");
       console.log(error);
@@ -160,6 +170,11 @@ const SingleUserPage = () => {
   useEffect(() => {
     fetchUserDetails();
   }, [myProfile]);
+
+  // useEffect(() => {
+  //   fetchUserDetails();
+  //   // console.log(currenUserInfo);
+  // }, [currenUserInfo]);
 
   useEffect(() => {
     if (currenUserInfo) checkIfAlreadyFriends();
@@ -304,7 +319,7 @@ const SingleUserPage = () => {
                       sortedMovies.slice(0, 5).map((m, index) => (
                         <div className="fiveMoviesList" key={index}>
                           <span
-                            className="cursorPointer"
+                            className="cursorPointer watchedMoviesWriteJustOnOneLine"
                             onClick={() => {
                               navigate(`/movies/${m.watchedMovie.imdbID}`);
                             }}
@@ -312,7 +327,8 @@ const SingleUserPage = () => {
                             {index + 1}.{m.watchedMovie.title}
                           </span>
                           <span className="d-flex align-items-center justify-content-center">
-                            {m.userRating} <Icon.StarFill className="ml-1" />
+                            {m.userRating !== -1 ? m.userRating : "NRY"}{" "}
+                            <Icon.StarFill className="ml-1" />
                           </span>
                         </div>
                       ))}

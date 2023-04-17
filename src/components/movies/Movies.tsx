@@ -21,6 +21,8 @@ import SingleMovieCard from "./SingleMovieCard";
 import { groupBy } from "lodash";
 
 const Movies = () => {
+  const [clickedSeeMoreMovies, setClickedSeeMoreMovies] =
+    useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentSearchedMovie, setCurrentSearchedMovie] = useState<string>("");
   const [movie, setMovie] = useState<IMovie | null>(null);
@@ -333,6 +335,119 @@ const Movies = () => {
             </Col>
           </Row>
           {movieGenres.length !== 0 &&
+            moviesByGenre.length !== 0 &&
+            movieGenres.map((genre: string, index: number) => {
+              if (
+                genre === "Action" ||
+                genre === "Adventure" ||
+                genre === "Comedy"
+              )
+                return (
+                  <Row className="justify-content-center mt-3">
+                    <Col className="d-flex justify-content-center">
+                      <div
+                        key={index}
+                        className="recentlySearchedMoviesContainer topRatedMovies"
+                      >
+                        <h5 className="cursorPointer">{genre}</h5>
+                        <div className="fiveRecentCardsContainer">
+                          {moviesByGenre.length !== 0 &&
+                            moviesByGenre[index].map(
+                              (m: any, index: number) => (
+                                <div key={index}>
+                                  <Card
+                                    className="mb-3 mr-2"
+                                    onClick={() => {
+                                      navigate(
+                                        `/movies/${m.watchedMovie.imdbID}`
+                                      );
+                                    }}
+                                  >
+                                    <Card.Img
+                                      variant="top"
+                                      src={m.watchedMovie.poster}
+                                    />
+                                  </Card>
+                                </div>
+                              )
+                            )}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                );
+            })}
+          <h5
+            className="mb-3 cursorPointer"
+            onClick={() => {
+              setClickedSeeMoreMovies(!clickedSeeMoreMovies);
+            }}
+          >
+            {clickedSeeMoreMovies === false ? "Show more movies" : "Show less"}
+          </h5>
+          {movieGenres.length !== 0 &&
+            moviesByGenre.length !== 0 &&
+            movieGenres.map((genre: string, index: number) => {
+              if (
+                genre !== "Action" &&
+                genre !== "Adventure" &&
+                genre !== "Comedy"
+              )
+                return (
+                  <Row
+                    className={
+                      !clickedSeeMoreMovies
+                        ? "d-none"
+                        : "justify-content-center mt-3"
+                    }
+                  >
+                    <Col className="d-flex justify-content-center">
+                      <div
+                        key={index}
+                        className="recentlySearchedMoviesContainer topRatedMovies"
+                      >
+                        <h5 className="cursorPointer">{genre}</h5>
+                        <div className="fiveRecentCardsContainer">
+                          {moviesByGenre.length !== 0 &&
+                            moviesByGenre[index].map(
+                              (m: any, index: number) => (
+                                <div key={index}>
+                                  <Card
+                                    className="mb-3 mr-2"
+                                    onClick={() => {
+                                      navigate(
+                                        `/movies/${m.watchedMovie.imdbID}`
+                                      );
+                                    }}
+                                  >
+                                    <Card.Img
+                                      variant="top"
+                                      src={m.watchedMovie.poster}
+                                    />
+                                  </Card>
+                                </div>
+                              )
+                            )}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                );
+            })}
+          {/* {moviesByGenre.length !== 0 && 
+            moviesByGenre.map((m: any, index: number) => (
+              <div key={index}>
+                <Card
+                  className="mb-3 mr-2"
+                  onClick={() => {
+                    navigate(`/movies/${m.watchedMovie.imdbID}`);
+                  }}
+                >
+                  <Card.Img variant="top" src={m.watchedMovie.poster} />
+                </Card>
+              </div>
+            ))} */}
+          {/* {movieGenres.length !== 0 &&
             movieGenres.map((genre: string, index: number) => (
               <Row
                 key={index}
@@ -441,7 +556,7 @@ const Movies = () => {
                   </div>
                 </Col>
               </Row>
-            ))}
+            ))} */}
           <div
             className={isLoading ? "d-none" : "carouselContainerProfilePage"}
           >

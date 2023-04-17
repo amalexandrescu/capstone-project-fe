@@ -55,6 +55,30 @@
   color: var(--input-bg-color);
 }
 
+.profilePicutureNewsFeed {
+  height: 40px;
+}
+
+.profileImageNewsFeed {
+  height: 40px;
+}
+
+.profileImageNewsFeedContainer {
+  overflow: hidden;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.profileIconNewsFeed {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 5px;
+  padding-top: 3px;
+  color: var(--navbar-active-color);
+  background-color: var(--input-bg-color);
+}
+
 @media screen and (max-width: 730px) {
   /* .mainContainer {
     background-color: pink !important;
